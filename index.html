@@ -3,758 +3,473 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Plāto – On-Demand Personal Chef</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Plāto – Exquisite Private Dining</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --cream: #F7F5F0;
-    --olive: #5A6F52;
-    --olive-dark: #4A5C43;
-    --olive-light: #7A8F72;
-    --warm-black: #1C1C1C;
-    --warm-gray: #8A857C;
-    --border: #E8E4DC;
-    --card-bg: #FDFCF9;
-  }
-
-  html, body {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--warm-black);
-  }
-
-  /* ─── MOBILE SHELL ─── */
-  .phone {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #E8E3DA;
-  }
-
-  .screen {
-    position: relative;
-    width: min(390px, 100vw);
-    height: min(844px, 100vh);
-    background: var(--cream);
-    overflow: hidden;
-    border-radius: min(44px, 4vw);
-    box-shadow: 0 32px 80px rgba(0,0,0,.22), 0 8px 20px rgba(0,0,0,.12);
-  }
-
-  /* ─── SPLASH ─── */
-  #splash {
-    position: absolute;
-    inset: 0;
-    background: var(--cream);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  .splash-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    animation: splashReveal 1.8s cubic-bezier(.22,.68,0,1.2) forwards;
-    opacity: 0;
-    transform: scale(.88) translateY(12px);
-  }
-
-  @keyframes splashReveal {
-    0%   { opacity: 0; transform: scale(.88) translateY(12px); }
-    60%  { opacity: 1; transform: scale(1.015) translateY(-2px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-  }
-
-  .logo-mark {
-    position: relative;
-    width: 88px;
-    height: 88px;
-  }
-
-  /* Animated shimmer ring */
-  .logo-mark svg.ring {
-    position: absolute;
-    inset: -8px;
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
-    animation: ringPulse 3s ease-in-out infinite;
-    opacity: 0;
-    animation-delay: 1s;
-  }
-
-  @keyframes ringPulse {
-    0%   { opacity: 0; transform: scale(.9); }
-    30%  { opacity: .35; }
-    60%  { opacity: 0; transform: scale(1.15); }
-    100% { opacity: 0; transform: scale(1.15); }
-  }
-
-  .logo-plate {
-    width: 88px;
-    height: 88px;
-    background: var(--olive);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Shimmer sweep on the plate */
-  .logo-plate::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%);
-    transform: translateX(-100%);
-    animation: shimmer 2.4s ease-in-out infinite;
-    animation-delay: 1.2s;
-  }
-
-  @keyframes shimmer {
-    0%   { transform: translateX(-100%); }
-    50%  { transform: translateX(100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  .logo-plate svg { width: 44px; height: 44px; }
-
-  .logo-wordmark {
-    text-align: center;
-  }
-
-  .logo-wordmark h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px;
-    font-weight: 300;
-    letter-spacing: .08em;
-    color: var(--warm-black);
-    line-height: 1;
-  }
-
-  .logo-wordmark h1 span {
-    color: var(--olive);
-  }
-
-  .logo-wordmark p {
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--warm-gray);
-    margin-top: 6px;
-  }
-
-  /* Floating dots */
-  .float-dots {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .dot {
-    position: absolute;
-    border-radius: 50%;
-    background: var(--olive);
-    opacity: 0;
-    animation: floatDot var(--dur) ease-in-out infinite;
-    animation-delay: var(--del);
-  }
-
-  @keyframes floatDot {
-    0%   { opacity: 0; transform: translateY(0) scale(1); }
-    20%  { opacity: var(--peak); }
-    80%  { opacity: var(--peak); }
-    100% { opacity: 0; transform: translateY(-28px) scale(.6); }
-  }
-
-  /* Splash exit */
-  #splash.exit {
-    animation: splashExit .7s cubic-bezier(.4,0,.2,1) forwards;
-  }
-
-  @keyframes splashExit {
-    0%   { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-24px); }
-  }
-
-  /* ─── MAIN SCREEN ─── */
-  #main {
-    position: absolute;
-    inset: 0;
-    background: var(--cream);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity .65s ease, transform .65s cubic-bezier(.22,.68,0,1.1);
-  }
-
-  #main.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Status bar */
-  .status-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 24px 0;
-    flex-shrink: 0;
-  }
-
-  .status-time {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--warm-black);
-  }
-
-  .status-icons { display: flex; gap: 6px; align-items: center; }
-  .status-icons svg { width: 16px; height: 16px; fill: var(--warm-black); }
-
-  /* Header */
-  .header {
-    padding: 18px 24px 0;
-    flex-shrink: 0;
-  }
-
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-  }
-
-  .brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
-    font-weight: 400;
-    letter-spacing: .06em;
-    color: var(--warm-black);
-  }
-
-  .brand em { color: var(--olive); font-style: normal; }
-
-  .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--olive);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: #fff;
-    letter-spacing: .02em;
-  }
-
-  .header h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 34px;
-    font-weight: 300;
-    color: var(--warm-black);
-    line-height: 1.15;
-    margin-top: 14px;
-  }
-
-  .header h2 em { color: var(--olive); font-style: italic; }
-
-  .header p {
-    font-size: 13.5px;
-    color: var(--warm-gray);
-    margin-top: 6px;
-    letter-spacing: .01em;
-  }
-
-  /* Search bar */
-  .search-wrap {
-    padding: 16px 24px 0;
-    flex-shrink: 0;
-  }
-
-  .search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 12px 16px;
-  }
-
-  .search-bar svg { width: 18px; height: 18px; stroke: var(--warm-gray); flex-shrink: 0; }
-  .search-bar span { font-size: 14px; color: var(--warm-gray); }
-
-  /* Filter chips */
-  .chips {
-    display: flex;
-    gap: 8px;
-    padding: 12px 24px 0;
-    flex-shrink: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .chips::-webkit-scrollbar { display: none; }
-
-  .chip {
-    flex-shrink: 0;
-    padding: 7px 16px;
-    border-radius: 99px;
-    font-size: 12.5px;
-    font-weight: 400;
-    letter-spacing: .02em;
-    cursor: pointer;
-    transition: all .2s;
-    white-space: nowrap;
-  }
-
-  .chip.active {
-    background: var(--olive);
-    color: #fff;
-  }
-
-  .chip:not(.active) {
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    color: var(--warm-gray);
-  }
-
-  /* Chef list */
-  .section-label {
-    padding: 16px 24px 10px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--warm-gray);
-    flex-shrink: 0;
-  }
-
-  .chef-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 24px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    scrollbar-width: none;
-  }
-  .chef-list::-webkit-scrollbar { display: none; }
-
-  .chef-card {
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 18px;
-    padding: 16px;
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    cursor: pointer;
-    transition: transform .18s ease, box-shadow .18s ease;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: cardReveal .5s ease forwards;
-    animation-delay: var(--card-delay);
-  }
-
-  @keyframes cardReveal {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .chef-card:active { transform: scale(.98); }
-
-  .chef-photo {
-    width: 60px;
-    height: 60px;
-    border-radius: 14px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 300;
-    font-family: 'Cormorant Garamond', serif;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .chef-photo::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
-  }
-
-  .chef-info { flex: 1; min-width: 0; }
-
-  .chef-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
-    font-weight: 400;
-    color: var(--warm-black);
-    letter-spacing: .02em;
-  }
-
-  .chef-specialty {
-    font-size: 12.5px;
-    color: var(--warm-gray);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .chef-meta {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-    align-items: center;
-  }
-
-  .badge {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: var(--warm-gray);
-  }
-
-  .badge svg { width: 12px; height: 12px; }
-
-  .badge.stars { color: #B8935A; }
-
-  .chef-price {
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .chef-price strong {
-    display: block;
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--warm-black);
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  .chef-price span {
-    font-size: 11px;
-    color: var(--warm-gray);
-  }
-
-  .avail-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #7BAE7F;
-    display: inline-block;
-    margin-right: 3px;
-    box-shadow: 0 0 0 2px rgba(123,174,127,.2);
-  }
-
-  /* Bottom CTA */
-  .bottom-bar {
-    padding: 12px 24px 28px;
-    flex-shrink: 0;
-    background: linear-gradient(to top, var(--cream) 60%, transparent);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity .4s ease .8s;
-  }
-
-  #main.visible .bottom-bar { opacity: 1; pointer-events: auto; }
-
-  .cta-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--olive);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: .04em;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background .2s, transform .15s;
-    box-shadow: 0 6px 20px rgba(90,111,82,.3);
-  }
-
-  .cta-btn:active { background: var(--olive-dark); transform: scale(.98); }
-  .cta-btn svg { width: 16px; height: 16px; stroke: #fff; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F5F2EB;
+  --cream-dark: #EDE9DF;
+  --olive: #5C7050;
+  --olive-dark: #4A5A40;
+  --olive-light: #7A8F6E;
+  --dark: #1E1E1B;
+  --warm-black: #1A1A17;
+  --warm-gray: #8A8578;
+  --warm-gray2: #B0AA9E;
+  --border: #DDD8CE;
+  --white: #FFFFFF;
+  --gold: #C9A84C;
+}
+
+html, body {
+  height: 100%; width: 100%;
+  overflow: hidden;
+  font-family: 'Jost', sans-serif;
+  background: #1A1815;
+}
+
+.phone {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #1A1815;
+}
+
+.screen {
+  position: relative;
+  width: min(390px, 100vw);
+  height: min(844px, 100vh);
+  background: var(--cream);
+  overflow: hidden;
+  border-radius: min(44px, 4vw);
+  box-shadow: 0 40px 100px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3);
+}
+
+/* ── SPLASH ── */
+#splash {
+  position: absolute; inset: 0;
+  background: var(--dark);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 20;
+}
+
+.splash-content {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 16px;
+  animation: splashIn 1.6s cubic-bezier(.16,1,.3,1) forwards;
+  opacity: 0; transform: translateY(20px);
+}
+
+@keyframes splashIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.splash-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 72px; font-weight: 700;
+  color: var(--olive-light);
+  letter-spacing: -.01em; line-height: 1;
+}
+
+.splash-divider {
+  width: 48px; height: 2px;
+  background: var(--olive);
+  margin: 4px auto;
+  animation: dividerIn .8s ease forwards;
+  animation-delay: .8s;
+  opacity: 0; transform: scaleX(0); transform-origin: center;
+}
+@keyframes dividerIn { to { opacity: 1; transform: scaleX(1); } }
+
+.splash-tagline {
+  font-size: 11px; font-weight: 400;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--warm-gray);
+  animation: fadeUp .8s ease forwards;
+  animation-delay: 1s; opacity: 0;
+}
+@keyframes fadeUp { to { opacity: 1; } }
+
+#splash.exit { animation: splashExit .8s ease forwards; }
+@keyframes splashExit { to { opacity: 0; } }
+
+/* ── APP ── */
+#app {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1);
+  background: var(--cream);
+}
+#app.visible { opacity: 1; transform: translateY(0); }
+
+.status-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 24px 0; flex-shrink: 0;
+}
+.status-time { font-size: 15px; font-weight: 500; color: var(--warm-black); }
+.status-icons { display: flex; gap: 5px; align-items: center; }
+.status-icons svg { width: 16px; height: 16px; fill: var(--warm-black); }
+
+.top-bar {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 16px 24px 0; flex-shrink: 0;
+}
+.page-title h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 500; color: var(--warm-black); line-height: 1.1;
+}
+.page-title p { font-size: 13px; color: var(--warm-gray); margin-top: 3px; font-weight: 300; }
+.brand-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 500; color: var(--olive); letter-spacing: .02em;
+}
+
+.scroll-content {
+  flex: 1; overflow-y: auto; padding-bottom: 80px; scrollbar-width: none;
+}
+.scroll-content::-webkit-scrollbar { display: none; }
+
+/* Booking card */
+.booking-card {
+  margin: 16px 16px 0;
+  background: var(--white);
+  border-radius: 20px; padding: 20px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
+}
+.section-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--warm-gray); margin-bottom: 12px;
+}
+.service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.service-btn {
+  padding: 14px 8px; border: 1.5px solid var(--border);
+  border-radius: 12px; background: var(--cream);
+  font-family: 'Jost', sans-serif; font-size: 13.5px; font-weight: 500;
+  color: var(--warm-black); cursor: pointer; transition: all .2s; text-align: center;
+}
+.service-btn.active { border-color: var(--olive); background: var(--olive); color: white; }
+
+.select-field {
+  width: 100%; padding: 14px 16px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  background: var(--cream); font-family: 'Jost', sans-serif;
+  font-size: 13.5px; color: var(--warm-gray);
+  appearance: none; margin-bottom: 10px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8578' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+}
+.date-field {
+  width: 100%; padding: 14px 16px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  background: var(--cream); font-family: 'Jost', sans-serif;
+  font-size: 13.5px; color: var(--warm-gray); margin-bottom: 16px;
+}
+.search-btn {
+  width: 100%; padding: 15px;
+  background: var(--olive); color: white; border: none; border-radius: 12px;
+  font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500;
+  letter-spacing: .04em; cursor: pointer; transition: background .2s, transform .15s;
+  box-shadow: 0 4px 16px rgba(92,112,80,.3);
+}
+.search-btn:active { background: var(--olive-dark); transform: scale(.98); }
+
+/* Concierge */
+.concierge-wrap { padding: 20px 16px 0; }
+.concierge-card { background: var(--dark); border-radius: 18px; padding: 22px 20px; }
+.concierge-label {
+  font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--olive-light); margin-bottom: 8px;
+}
+.concierge-card h3 {
+  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500;
+  color: white; line-height: 1.3; margin-bottom: 6px;
+}
+.concierge-card p { font-size: 13px; color: var(--warm-gray2); margin-bottom: 16px; font-weight: 300; }
+.concierge-btn {
+  padding: 12px 20px; background: white; color: var(--warm-black);
+  border: none; border-radius: 99px; font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s;
+}
+
+/* Section headings */
+.section-heading {
+  padding: 20px 20px 4px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.section-heading h3 {
+  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--warm-black);
+}
+.section-heading span { font-size: 11px; color: var(--olive); font-weight: 500; letter-spacing: .04em; cursor: pointer; }
+.section-sub { padding: 0 20px 12px; font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--warm-gray2); }
+
+/* Chef cards */
+.chef-cards { padding: 4px 16px 0; display: flex; flex-direction: column; gap: 16px; }
+
+.chef-card {
+  background: white; border-radius: 18px; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  opacity: 0; transform: translateY(16px);
+  animation: cardIn .5s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+
+.chef-photo-bg {
+  width: 100%; height: 190px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.chef-photo-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.08) 100%);
+}
+
+.rating-badge {
+  position: absolute; top: 12px; right: 12px;
+  background: white; border-radius: 99px; padding: 5px 10px;
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12px; font-weight: 500; color: var(--warm-black);
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.rating-badge svg { width: 12px; height: 12px; fill: var(--gold); }
+
+.chef-card-body { padding: 16px; }
+.chef-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
+.chef-card-top h4 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; color: var(--warm-black); }
+.chef-price { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; color: var(--warm-black); }
+.chef-cuisine { font-size: 12px; color: var(--olive); font-weight: 500; letter-spacing: .02em; margin-bottom: 6px; }
+.chef-desc { font-size: 12.5px; color: var(--warm-gray); line-height: 1.5; font-weight: 300; margin-bottom: 14px; }
+
+.chef-card-actions { display: flex; gap: 10px; align-items: center; }
+.book-btn {
+  flex: 1; padding: 13px;
+  background: var(--olive); color: white; border: none; border-radius: 10px;
+  font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: .04em; cursor: pointer; transition: background .2s, transform .15s;
+}
+.book-btn:active { background: var(--olive-dark); transform: scale(.98); }
+
+.save-btn {
+  width: 44px; height: 44px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  background: var(--cream); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s; flex-shrink: 0;
+}
+.save-btn svg { width: 18px; height: 18px; stroke: var(--warm-gray); fill: none; stroke-width: 1.8; }
+.save-btn.saved svg { fill: #E05555; stroke: #E05555; }
+.save-btn:active { transform: scale(.9); }
+
+/* Bottom nav */
+.bottom-nav {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(245,242,235,.96); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  display: flex; padding: 8px 0 20px;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; cursor: pointer; padding: 4px 0;
+}
+.nav-item svg { width: 22px; height: 22px; stroke-width: 1.5; fill: none; }
+.nav-item span { font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+.nav-item.active svg { stroke: var(--olive); }
+.nav-item.active span { color: var(--olive); }
+.nav-item:not(.active) svg { stroke: var(--warm-gray2); }
+.nav-item:not(.active) span { color: var(--warm-gray2); }
 </style>
 </head>
 <body>
-
 <div class="phone">
-  <div class="screen">
+ <div class="screen">
 
-    <!-- ░░░ SPLASH ░░░ -->
-    <div id="splash">
-      <!-- Ambient floating dots -->
-      <div class="float-dots">
-        <div class="dot" style="width:6px;height:6px;left:20%;top:30%;--dur:4s;--del:.8s;--peak:.12;"></div>
-        <div class="dot" style="width:4px;height:4px;left:72%;top:25%;--dur:5s;--del:1.2s;--peak:.09;"></div>
-        <div class="dot" style="width:5px;height:5px;left:55%;top:70%;--dur:4.5s;--del:.5s;--peak:.1;"></div>
-        <div class="dot" style="width:3px;height:3px;left:30%;top:68%;--dur:6s;--del:1.8s;--peak:.08;"></div>
-        <div class="dot" style="width:5px;height:5px;left:80%;top:60%;--dur:5.5s;--del:.3s;--peak:.1;"></div>
-        <div class="dot" style="width:4px;height:4px;left:12%;top:55%;--dur:4.2s;--del:2s;--peak:.07;"></div>
-      </div>
+  <!-- SPLASH -->
+  <div id="splash">
+    <div class="splash-content">
+      <div class="splash-logo">Plāto</div>
+      <div class="splash-divider"></div>
+      <div class="splash-tagline">Exquisite Private Dining</div>
+    </div>
+  </div>
 
-      <div class="splash-inner">
-        <!-- Logo mark -->
-        <div class="logo-mark">
-          <!-- Pulse ring -->
-          <svg class="ring" viewBox="0 0 104 104" fill="none">
-            <circle cx="52" cy="52" r="49" stroke="#5A6F52" stroke-width="1.5" stroke-dasharray="6 6"/>
-          </svg>
-          <!-- Plate icon -->
-          <div class="logo-plate">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Plate base -->
-              <ellipse cx="22" cy="32" rx="14" ry="2.5" fill="rgba(255,255,255,.15)"/>
-              <!-- Cloche dome -->
-              <path d="M8 27C8 18.163 14.268 11 22 11C29.732 11 36 18.163 36 27H8Z" fill="rgba(255,255,255,.85)"/>
-              <!-- Cloche line -->
-              <line x1="6" y1="27" x2="38" y2="27" stroke="rgba(255,255,255,.9)" stroke-width="1.5" stroke-linecap="round"/>
-              <!-- Handle -->
-              <rect x="19.5" y="7" width="5" height="4" rx="2.5" fill="rgba(255,255,255,.85)"/>
-              <!-- Steam wisps -->
-              <path d="M15 24C15 21 17 20 17 17" stroke="rgba(90,111,82,.4)" stroke-width="1.2" stroke-linecap="round"/>
-              <path d="M22 23C22 20 24 19 24 16" stroke="rgba(90,111,82,.4)" stroke-width="1.2" stroke-linecap="round"/>
-              <path d="M29 24C29 21 27 20 27 17" stroke="rgba(90,111,82,.4)" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
-          </div>
-        </div>
+  <!-- APP -->
+  <div id="app">
 
-        <!-- Wordmark -->
-        <div class="logo-wordmark">
-          <h1>Pl<span>ā</span>to</h1>
-          <p>Personal Chef, On Demand</p>
-        </div>
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <svg viewBox="0 0 16 16"><rect x="0" y="10" width="3" height="6"/><rect x="4.5" y="7" width="3" height="9"/><rect x="9" y="4" width="3" height="12"/><rect x="13.5" y="1" width="3" height="15" opacity=".3"/></svg>
+        <svg viewBox="0 0 20 12" style="fill:none"><rect x="0" y="1.5" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="3" width="11" height="6" rx="1" fill="currentColor"/><path d="M17 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </div>
     </div>
 
-    <!-- ░░░ MAIN SCREEN ░░░ -->
-    <div id="main">
+    <div class="top-bar">
+      <div class="page-title">
+        <h2>Plan Experience</h2>
+        <p>Discover refined private dining</p>
+      </div>
+      <div class="brand-mark">Plāto</div>
+    </div>
 
-      <!-- Status bar -->
-      <div class="status-bar">
-        <span class="status-time">9:41</span>
-        <div class="status-icons">
-          <!-- Signal -->
-          <svg viewBox="0 0 16 16"><rect x="0" y="10" width="3" height="6"/><rect x="4.5" y="7" width="3" height="9"/><rect x="9" y="4" width="3" height="12"/><rect x="13.5" y="1" width="3" height="15" opacity=".3"/></svg>
-          <!-- WiFi -->
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 6a10 10 0 0 1 14 0"/><path d="M4 9.5a6 6 0 0 1 8 0"/><path d="M7 13a2.5 2.5 0 0 1 2 0"/><circle cx="8" cy="13.5" r=".8" fill="currentColor"/></svg>
-          <!-- Battery -->
-          <svg viewBox="0 0 20 12"><rect x="0" y="1.5" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="3" width="11" height="6" rx="1" fill="currentColor"/><path d="M17 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div class="scroll-content">
+
+      <!-- Booking -->
+      <div class="booking-card">
+        <div class="section-label">1. Select Service Type</div>
+        <div class="service-grid">
+          <button class="service-btn active" onclick="selectService(this)">Private</button>
+          <button class="service-btn" onclick="selectService(this)">Catering</button>
+          <button class="service-btn" onclick="selectService(this)">Meal Prep</button>
+          <button class="service-btn" onclick="selectService(this)">Cooking Class</button>
+        </div>
+        <div class="section-label">2. Select Cuisine</div>
+        <select class="select-field">
+          <option value="" disabled selected>Cuisine (Optional)</option>
+          <option>Italian</option><option>Japanese</option><option>French</option>
+          <option>Mediterranean</option><option>Indian</option><option>American</option><option>Plant-Based</option>
+        </select>
+        <div class="section-label">3. Select Date</div>
+        <input type="date" class="date-field">
+        <button class="search-btn">Search Available Chefs</button>
+      </div>
+
+      <!-- Concierge -->
+      <div class="concierge-wrap">
+        <div class="concierge-card">
+          <div class="concierge-label">Personal Concierge</div>
+          <h3>Can't find the perfect match?</h3>
+          <p>Let our luxury concierge curate the experience for you.</p>
+          <button class="concierge-btn">Ask Plāto Concierge</button>
         </div>
       </div>
 
-      <!-- Header -->
-      <div class="header">
-        <div class="header-top">
-          <span class="brand">Pl<em>ā</em>to</span>
-          <div class="avatar">SL</div>
-        </div>
-        <h2>Find Your<br><em>Chef</em></h2>
-        <p>Browse professional chefs near you</p>
-      </div>
+      <!-- Featured -->
+      <div class="section-heading"><h3>Featured Artists</h3><span>See all</span></div>
+      <div class="section-sub">Near You</div>
+      <div class="chef-cards">
 
-      <!-- Search -->
-      <div class="search-wrap">
-        <div class="search-bar">
-          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linecap="round">
-            <circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/>
-          </svg>
-          <span>Cuisine, chef name, or dish…</span>
-        </div>
-      </div>
-
-      <!-- Filter chips -->
-      <div class="chips">
-        <div class="chip active">All Chefs</div>
-        <div class="chip">Italian</div>
-        <div class="chip">Japanese</div>
-        <div class="chip">French</div>
-        <div class="chip">Plant-Based</div>
-        <div class="chip">Pastry</div>
-      </div>
-
-      <!-- Section label -->
-      <div class="section-label">Available Now · 8 chefs nearby</div>
-
-      <!-- Chef cards -->
-      <div class="chef-list">
-
-        <div class="chef-card" style="--card-delay:.15s">
-          <div class="chef-photo" style="background: linear-gradient(135deg,#7A8F72,#5A6F52)">
-            <span style="font-size:26px">👨‍🍳</span>
+        <div class="chef-card" style="--d:.1s">
+          <div style="position:relative">
+            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#8B7355,#3D3020)">
+              <span style="font-size:80px;opacity:.35">🍝</span>
+            </div>
+            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.9</div>
           </div>
-          <div class="chef-info">
-            <div class="chef-name">Marco Esposito</div>
-            <div class="chef-specialty">Modern Italian · Michelin trained</div>
-            <div class="chef-meta">
-              <span class="badge stars">
-                <svg viewBox="0 0 12 12" fill="#B8935A"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>
-                4.97
-              </span>
-              <span class="badge">
-                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="4.5"/><path d="M6 3.5v2.5l1.5 1"/></svg>
-                0.8 mi
-              </span>
-              <span class="badge"><span class="avail-dot"></span>Available</span>
+          <div class="chef-card-body">
+            <div class="chef-card-top"><h4>Chef Mario Rossi</h4><div class="chef-price">$85/head</div></div>
+            <div class="chef-cuisine">Italian</div>
+            <div class="chef-desc">Specializing in handmade pasta and authentic Roman recipes passed down through generations.</div>
+            <div class="chef-card-actions">
+              <button class="book-btn">Book Experience</button>
+              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             </div>
           </div>
-          <div class="chef-price">
-            <strong>$85</strong>
-            <span>/ hour</span>
-          </div>
         </div>
 
-        <div class="chef-card" style="--card-delay:.28s">
-          <div class="chef-photo" style="background: linear-gradient(135deg,#9B7D5C,#7A5C3C)">
-            <span style="font-size:26px">👩‍🍳</span>
+        <div class="chef-card" style="--d:.22s">
+          <div style="position:relative">
+            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#C4956A,#5A3A20)">
+              <span style="font-size:80px;opacity:.35">🍱</span>
+            </div>
+            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.8</div>
           </div>
-          <div class="chef-info">
-            <div class="chef-name">Yuki Tanaka</div>
-            <div class="chef-specialty">Japanese Kaiseki · Omakase</div>
-            <div class="chef-meta">
-              <span class="badge stars">
-                <svg viewBox="0 0 12 12" fill="#B8935A"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>
-                5.0
-              </span>
-              <span class="badge">
-                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="4.5"/><path d="M6 3.5v2.5l1.5 1"/></svg>
-                1.2 mi
-              </span>
-              <span class="badge"><span class="avail-dot"></span>Available</span>
+          <div class="chef-card-body">
+            <div class="chef-card-top"><h4>Chef Kenji Tanaka</h4><div class="chef-price">$150/head</div></div>
+            <div class="chef-cuisine">Japanese</div>
+            <div class="chef-desc">Expert sushi master bringing the Tsukiji market experience to your private dining room.</div>
+            <div class="chef-card-actions">
+              <button class="book-btn">Book Experience</button>
+              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             </div>
           </div>
-          <div class="chef-price">
-            <strong>$110</strong>
-            <span>/ hour</span>
-          </div>
         </div>
 
-        <div class="chef-card" style="--card-delay:.41s">
-          <div class="chef-photo" style="background: linear-gradient(135deg,#6A8A7A,#4A6A5A)">
-            <span style="font-size:26px">🧑‍🍳</span>
+        <div class="section-heading" style="padding:16px 4px 4px"><h3>Highly Recommended</h3><span>See all</span></div>
+        <div class="section-sub" style="padding:0 4px 8px">Near Manhattan, NY</div>
+
+        <div class="chef-card" style="--d:.34s">
+          <div style="position:relative">
+            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#4A6B5A,#1A3028)">
+              <span style="font-size:80px;opacity:.35">🥗</span>
+            </div>
+            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>5.0</div>
           </div>
-          <div class="chef-info">
-            <div class="chef-name">Isabelle Morel</div>
-            <div class="chef-specialty">French Bistro · Boulangerie</div>
-            <div class="chef-meta">
-              <span class="badge stars">
-                <svg viewBox="0 0 12 12" fill="#B8935A"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>
-                4.92
-              </span>
-              <span class="badge">
-                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="4.5"/><path d="M6 3.5v2.5l1.5 1"/></svg>
-                2.1 mi
-              </span>
-              <span class="badge"><span class="avail-dot"></span>Available</span>
+          <div class="chef-card-body">
+            <div class="chef-card-top"><h4>Chef Isabelle Morel</h4><div class="chef-price">$120/head</div></div>
+            <div class="chef-cuisine">French</div>
+            <div class="chef-desc">Classically trained in Lyon, bringing Michelin-inspired French cuisine to intimate gatherings.</div>
+            <div class="chef-card-actions">
+              <button class="book-btn">Book Experience</button>
+              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             </div>
           </div>
-          <div class="chef-price">
-            <strong>$75</strong>
-            <span>/ hour</span>
-          </div>
         </div>
 
-        <div class="chef-card" style="--card-delay:.54s">
-          <div class="chef-photo" style="background: linear-gradient(135deg,#8A7A62,#6A5A42)">
-            <span style="font-size:26px">👨‍🍳</span>
+        <div class="chef-card" style="--d:.46s">
+          <div style="position:relative">
+            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#7A6A4A,#3A2A10)">
+              <span style="font-size:80px;opacity:.35">🍛</span>
+            </div>
+            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.7</div>
           </div>
-          <div class="chef-info">
-            <div class="chef-name">Raj Sharma</div>
-            <div class="chef-specialty">Modern Indian · Plant-based</div>
-            <div class="chef-meta">
-              <span class="badge stars">
-                <svg viewBox="0 0 12 12" fill="#B8935A"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>
-                4.88
-              </span>
-              <span class="badge">
-                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="6" r="4.5"/><path d="M6 3.5v2.5l1.5 1"/></svg>
-                0.5 mi
-              </span>
-              <span class="badge"><span class="avail-dot"></span>Available</span>
+          <div class="chef-card-body">
+            <div class="chef-card-top"><h4>Chef Raj Sharma</h4><div class="chef-price">$95/head</div></div>
+            <div class="chef-cuisine">Modern Indian</div>
+            <div class="chef-desc">Award-winning spice artisan crafting contemporary Indian tasting menus for the discerning palate.</div>
+            <div class="chef-card-actions">
+              <button class="book-btn">Book Experience</button>
+              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             </div>
           </div>
-          <div class="chef-price">
-            <strong>$65</strong>
-            <span>/ hour</span>
-          </div>
         </div>
 
-        <!-- Spacer for bottom bar -->
-        <div style="height: 56px; flex-shrink:0;"></div>
       </div>
+    </div>
 
-      <!-- Bottom CTA -->
-      <div class="bottom-bar">
-        <button class="cta-btn">
-          <svg viewBox="0 0 20 20" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="10" cy="10" r="8.5"/>
-            <path d="M10 7v3l2 2"/>
-          </svg>
-          Book a Chef Tonight
-        </button>
+    <!-- Bottom nav -->
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="setNav(this)">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
       </div>
+      <div class="nav-item" onclick="setNav(this)">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>Explore</span>
+      </div>
+      <div class="nav-item" onclick="setNav(this)">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Saved</span>
+      </div>
+      <div class="nav-item" onclick="setNav(this)">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </div>
+    </div>
 
-    </div><!-- /main -->
-  </div><!-- /screen -->
-</div><!-- /phone -->
+  </div>
+ </div>
+</div>
 
 <script>
-  // Trigger splash → main transition
   setTimeout(() => {
     const splash = document.getElementById('splash');
-    const main   = document.getElementById('main');
-
-    // Exit splash
+    const app = document.getElementById('app');
     splash.classList.add('exit');
+    setTimeout(() => { app.classList.add('visible'); splash.style.display = 'none'; }, 700);
+  }, 2800);
 
-    // Show main
-    setTimeout(() => {
-      main.classList.add('visible');
-      splash.style.display = 'none';
-    }, 500);
-
-  }, 2400); // Splash stays for 2.4s
-
-  // Chip interaction
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-    });
-  });
+  function selectService(btn) {
+    document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  function toggleSave(btn) { btn.classList.toggle('saved'); }
+  function setNav(item) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  }
 </script>
 </body>
 </html>
