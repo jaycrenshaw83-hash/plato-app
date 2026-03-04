@@ -6,470 +6,1370 @@
 <title>Plāto – Exquisite Private Dining</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --cream: #F5F2EB;
-  --cream-dark: #EDE9DF;
-  --olive: #5C7050;
-  --olive-dark: #4A5A40;
-  --olive-light: #7A8F6E;
-  --dark: #1E1E1B;
-  --warm-black: #1A1A17;
-  --warm-gray: #8A8578;
-  --warm-gray2: #B0AA9E;
-  --border: #DDD8CE;
-  --white: #FFFFFF;
-  --gold: #C9A84C;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F2EB;--olive:#5C7050;--olive-dark:#4A5A40;--olive-light:#7A8F6E;
+  --dark:#1E1E1B;--warm-black:#1A1A17;--warm-gray:#8A8578;--warm-gray2:#B0AA9E;
+  --border:#DDD8CE;--gold:#C9A84C;--mustard:#C8962A;--mustard-light:#E8B84B;
 }
-
-html, body {
-  height: 100%; width: 100%;
-  overflow: hidden;
-  font-family: 'Jost', sans-serif;
-  background: #1A1815;
-}
-
-.phone {
-  position: fixed; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: #1A1815;
-}
-
-.screen {
-  position: relative;
-  width: min(390px, 100vw);
-  height: min(844px, 100vh);
-  background: var(--cream);
-  overflow: hidden;
-  border-radius: min(44px, 4vw);
-  box-shadow: 0 40px 100px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3);
-}
+html,body{height:100%;width:100%;overflow:hidden;font-family:'Jost',sans-serif;background:#1A1815}
+.phone{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#1A1815}
+.screen{position:relative;width:min(390px,100vw);height:min(844px,100vh);background:var(--cream);overflow:hidden;border-radius:min(44px,4vw);box-shadow:0 40px 100px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.3)}
 
 /* ── SPLASH ── */
-#splash {
-  position: absolute; inset: 0;
-  background: var(--dark);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  z-index: 20;
-}
+#splash{position:absolute;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;overflow:hidden}
+.splash-content{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative;z-index:2;animation:splashIn 1.6s cubic-bezier(.16,1,.3,1) forwards;opacity:0;transform:translateY(20px)}
+@keyframes splashIn{to{opacity:1;transform:translateY(0)}}
+.splash-logo{font-family:'Playfair Display',serif;font-size:72px;font-weight:700;color:var(--olive-light);letter-spacing:-.01em;line-height:1}
+.splash-divider{width:48px;height:2px;background:var(--mustard);margin:4px auto;animation:divIn .8s ease .8s forwards;opacity:0;transform:scaleX(0);transform-origin:center}
+@keyframes divIn{to{opacity:1;transform:scaleX(1)}}
+.splash-tagline{font-size:11px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--warm-gray);animation:fadeUp .8s ease 1s forwards;opacity:0}
+@keyframes fadeUp{to{opacity:1}}
+#splash.exit{animation:splashExit .7s ease forwards}
+@keyframes splashExit{to{opacity:0}}
 
-.splash-content {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 16px;
-  animation: splashIn 1.6s cubic-bezier(.16,1,.3,1) forwards;
-  opacity: 0; transform: translateY(20px);
-}
+/* ── ONBOARDING ── */
+#onboarding{position:absolute;inset:0;background:var(--dark);z-index:25;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .5s ease}
+#onboarding.active{opacity:1;pointer-events:all}
+.ob-bg{position:absolute;inset:0;pointer-events:none}
+.ob-slides{flex:1;display:flex;overflow:hidden;position:relative}
+.ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;opacity:0;transform:translateX(60px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+.ob-slide.active{opacity:1;transform:translateX(0)}
+.ob-slide.exit{opacity:0;transform:translateX(-60px)}
+.ob-icon{width:96px;height:96px;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:32px;position:relative}
+.ob-icon::after{content:'';position:absolute;inset:-3px;border-radius:31px;border:1.5px solid rgba(200,150,42,.4)}
+.ob-slide h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:white;text-align:center;line-height:1.2;margin-bottom:14px}
+.ob-slide h2 em{color:var(--mustard-light);font-style:italic}
+.ob-slide p{font-size:15px;color:var(--warm-gray2);text-align:center;line-height:1.7;font-weight:300;max-width:280px}
+.ob-bottom{padding:24px 32px 44px;flex-shrink:0;display:flex;flex-direction:column;gap:16px;position:relative;z-index:2}
+.ob-dots{display:flex;justify-content:center;gap:7px}
+.ob-dot{width:6px;height:6px;border-radius:99px;background:rgba(255,255,255,.2);transition:all .3s}
+.ob-dot.active{width:20px;background:var(--mustard-light)}
+.ob-next-btn{width:100%;padding:17px;background:var(--olive);color:white;border:none;border-radius:14px;font-family:'Jost',sans-serif;font-size:15px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 6px 20px rgba(92,112,80,.35)}
+.ob-next-btn:active{transform:scale(.98);background:var(--olive-dark)}
+.ob-skip{text-align:center;font-size:13px;color:var(--warm-gray);cursor:pointer;padding:4px;letter-spacing:.04em}
 
-@keyframes splashIn {
-  to { opacity: 1; transform: translateY(0); }
-}
+/* ── APP SHELL ── */
+#app{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+#app.visible{opacity:1;transform:translateY(0)}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--cream);opacity:0;pointer-events:none;transform:translateX(30px);transition:opacity .35s ease,transform .35s cubic-bezier(.16,1,.3,1)}
+.page.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.page.slide-up{transform:translateY(30px)}
+.page.slide-up.active{transform:translateY(0)}
 
-.splash-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 72px; font-weight: 700;
-  color: var(--olive-light);
-  letter-spacing: -.01em; line-height: 1;
-}
+/* status bar shared */
+.sb{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 0;flex-shrink:0;position:relative;z-index:2}
+.sb-time{font-size:15px;font-weight:500}
+.sb-icons{display:flex;gap:5px;align-items:center}
+.sb-icons svg{width:16px;height:16px}
 
-.splash-divider {
-  width: 48px; height: 2px;
-  background: var(--olive);
-  margin: 4px auto;
-  animation: dividerIn .8s ease forwards;
-  animation-delay: .8s;
-  opacity: 0; transform: scaleX(0); transform-origin: center;
-}
-@keyframes dividerIn { to { opacity: 1; transform: scaleX(1); } }
+/* ── BRANCH BG (reusable) ── */
+.branch-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 
-.splash-tagline {
-  font-size: 11px; font-weight: 400;
-  letter-spacing: .28em; text-transform: uppercase;
-  color: var(--warm-gray);
-  animation: fadeUp .8s ease forwards;
-  animation-delay: 1s; opacity: 0;
-}
-@keyframes fadeUp { to { opacity: 1; } }
+/* ── HOME ── */
+.scroll-content{flex:1;overflow-y:auto;padding-bottom:80px;scrollbar-width:none;position:relative;z-index:2}
+.scroll-content::-webkit-scrollbar{display:none}
+.booking-card{margin:14px 16px 0;background:rgba(255,255,255,.92);border-radius:20px;padding:18px 20px;box-shadow:0 2px 20px rgba(0,0,0,.08);backdrop-filter:blur(8px)}
+.sec-lbl{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:10px}
+.service-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.service-btn{padding:13px 8px;border:1.5px solid var(--border);border-radius:12px;background:rgba(245,242,235,.8);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;color:var(--warm-black);cursor:pointer;transition:all .2s;text-align:center}
+.service-btn.active{border-color:var(--olive);background:var(--olive);color:white}
+.sel-field{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;background:rgba(245,242,235,.8);font-family:'Jost',sans-serif;font-size:13px;color:var(--warm-gray);appearance:none;margin-bottom:10px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8578' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.date-field{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;background:rgba(245,242,235,.8);font-family:'Jost',sans-serif;font-size:13px;color:var(--warm-gray);margin-bottom:14px}
+.search-btn{width:100%;padding:14px;background:var(--olive);color:white;border:none;border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(92,112,80,.3)}
+.search-btn:active{background:var(--olive-dark);transform:scale(.98)}
+.conc-wrap{padding:18px 16px 0}
+.conc-card{background:var(--dark);border-radius:18px;padding:20px;position:relative;overflow:hidden}
+.conc-card::before{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(200,150,42,.2) 0%,transparent 70%);border-radius:50%}
+.conc-lbl{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--mustard-light);margin-bottom:8px}
+.conc-card h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:500;color:white;line-height:1.3;margin-bottom:6px}
+.conc-card p{font-size:13px;color:var(--warm-gray2);margin-bottom:14px;font-weight:300}
+.conc-btn{padding:11px 18px;background:white;color:var(--warm-black);border:none;border-radius:99px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.sec-heading{padding:18px 20px 4px;display:flex;justify-content:space-between;align-items:baseline}
+.sec-heading h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--warm-black)}
+.sec-heading span{font-size:11px;color:var(--olive);font-weight:500;letter-spacing:.04em;cursor:pointer}
+.sec-sub{padding:0 20px 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--warm-gray2);font-weight:400}
+.chef-cards{padding:4px 16px 0;display:flex;flex-direction:column;gap:14px}
+.chef-card{background:rgba(255,255,255,.95);border-radius:18px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.08);opacity:0;transform:translateY(16px);animation:cardIn .5s ease forwards;animation-delay:var(--d,0s);cursor:pointer}
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+.chef-photo-bg{width:100%;height:185px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.chef-photo-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.08) 100%)}
+.rating-badge{position:absolute;top:12px;right:12px;background:white;border-radius:99px;padding:5px 10px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--warm-black);box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:1}
+.rating-badge svg{width:12px;height:12px;fill:var(--gold)}
+.chef-card-body{padding:14px 16px 16px}
+.chef-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3px}
+.chef-card-top h4{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--warm-black)}
+.chef-price{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;color:var(--warm-black)}
+.chef-cuisine{font-size:12px;color:var(--olive);font-weight:500;letter-spacing:.02em;margin-bottom:5px}
+.chef-desc{font-size:12.5px;color:var(--warm-gray);line-height:1.5;font-weight:300;margin-bottom:13px}
+.chef-actions{display:flex;gap:10px;align-items:center}
+.book-btn{flex:1;padding:12px;background:var(--olive);color:white;border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s}
+.book-btn:active{background:var(--olive-dark);transform:scale(.98)}
+.save-btn{width:44px;height:44px;border:1.5px solid var(--border);border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.save-btn svg{width:18px;height:18px;stroke:var(--warm-gray);fill:none;stroke-width:1.8}
+.save-btn.saved svg{fill:#E05555;stroke:#E05555}
 
-#splash.exit { animation: splashExit .8s ease forwards; }
-@keyframes splashExit { to { opacity: 0; } }
+/* ── CHEF PROFILE ── */
+#page-profile{background:var(--cream)}
+.profile-hero{position:relative;height:280px;flex-shrink:0;overflow:hidden}
+.profile-photo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:120px}
+.profile-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 100%)}
+.profile-back{position:absolute;top:52px;left:20px;z-index:5;width:38px;height:38px;border-radius:99px;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.profile-back svg{width:16px;height:16px;stroke:white;stroke-width:2;fill:none}
+.profile-save{position:absolute;top:52px;right:20px;z-index:5;width:38px;height:38px;border-radius:99px;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.profile-save svg{width:18px;height:18px;stroke:white;fill:none;stroke-width:1.8}
+.profile-save.saved svg{fill:#E05555;stroke:#E05555}
+.profile-hero-info{position:absolute;bottom:0;left:0;right:0;padding:20px;z-index:3}
+.profile-hero-info h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:white;margin-bottom:4px}
+.profile-hero-info .cuisine-tag{font-size:12px;color:rgba(255,255,255,.8);font-weight:400;letter-spacing:.06em}
+.profile-stats{display:flex;gap:6px;margin-top:10px}
+.stat-pill{background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border-radius:99px;padding:5px 12px;font-size:11px;color:white;font-weight:500;display:flex;align-items:center;gap:5px}
+.stat-pill svg{width:11px;height:11px;fill:var(--gold)}
+.profile-scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:100px}
+.profile-scroll::-webkit-scrollbar{display:none}
+.profile-section{padding:20px 20px 0}
+.profile-section h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--warm-black);margin-bottom:10px}
+.profile-bio{font-size:13.5px;color:var(--warm-gray);line-height:1.7;font-weight:300}
+.menu-items{display:flex;flex-direction:column;gap:8px}
+.menu-item{background:white;border-radius:14px;padding:14px 16px;border:1px solid var(--border)}
+.menu-item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.menu-item-top span{font-family:'Playfair Display',serif;font-size:14px;font-weight:500;color:var(--warm-black)}
+.menu-item-top em{font-size:13px;color:var(--olive);font-style:normal;font-weight:500}
+.menu-item p{font-size:12px;color:var(--warm-gray);font-weight:300;line-height:1.5}
+.course-badge{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mustard);font-weight:500;margin-bottom:3px}
+.reviews-list{display:flex;flex-direction:column;gap:10px}
+.review-card{background:white;border-radius:14px;padding:14px 16px;border:1px solid var(--border)}
+.review-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.reviewer{font-size:13px;font-weight:500;color:var(--warm-black)}
+.review-stars{display:flex;gap:2px}
+.review-stars svg{width:11px;height:11px;fill:var(--gold)}
+.review-text{font-size:12.5px;color:var(--warm-gray);line-height:1.5;font-weight:300}
+.review-date{font-size:11px;color:var(--warm-gray2);margin-top:5px}
+.avail-chips{display:flex;flex-wrap:wrap;gap:8px}
+.avail-chip{padding:8px 14px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif}
+.avail-chip.open{background:rgba(92,112,80,.1);color:var(--olive);border:1px solid rgba(92,112,80,.3)}
+.avail-chip.full{background:rgba(176,170,158,.1);color:var(--warm-gray2);border:1px solid var(--border);cursor:default;text-decoration:line-through}
+.profile-book-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(245,242,235,.96);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 20px 28px;display:flex;align-items:center;gap:14px;z-index:10}
+.profile-price-info{flex:1}
+.profile-price-info .price{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--warm-black)}
+.profile-price-info .price-sub{font-size:11px;color:var(--warm-gray);margin-top:1px}
+.profile-book-btn{padding:14px 28px;background:var(--olive);color:white;border:none;border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(92,112,80,.35);white-space:nowrap}
+.profile-book-btn:active{transform:scale(.97);background:var(--olive-dark)}
 
-/* ── APP ── */
-#app {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  opacity: 0; transform: translateY(20px);
-  transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1);
-  background: var(--cream);
-}
-#app.visible { opacity: 1; transform: translateY(0); }
+/* ── BOOKING FLOW ── */
+#page-booking{background:var(--cream)}
+.booking-header{padding:14px 20px 0;flex-shrink:0;display:flex;align-items:center;gap:14px;position:relative;z-index:2}
+.bk-back{width:38px;height:38px;border-radius:99px;background:rgba(0,0,0,.06);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.bk-back svg{width:16px;height:16px;stroke:var(--warm-black);fill:none;stroke-width:2}
+.bk-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--warm-black)}
+/* Progress bar */
+.progress-bar{margin:16px 20px 0;height:3px;background:var(--border);border-radius:99px;flex-shrink:0;position:relative;z-index:2}
+.progress-fill{height:100%;background:var(--olive);border-radius:99px;transition:width .4s cubic-bezier(.16,1,.3,1)}
+.step-labels{display:flex;justify-content:space-between;margin:6px 20px 0;flex-shrink:0;position:relative;z-index:2}
+.step-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;transition:color .3s}
+.step-lbl.active{color:var(--olive);font-weight:500}
+.step-lbl:not(.active){color:var(--warm-gray2)}
+/* Booking steps */
+.bk-scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding:20px 20px 24px;position:relative;z-index:2}
+.bk-scroll::-webkit-scrollbar{display:none}
+.bk-step{display:none}
+.bk-step.active{display:block}
+.bk-step h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--warm-black);margin-bottom:6px}
+.bk-step p{font-size:13px;color:var(--warm-gray);margin-bottom:20px;font-weight:300}
+/* Chef summary card in booking */
+.bk-chef-summary{background:white;border-radius:16px;padding:14px;display:flex;align-items:center;gap:14px;margin-bottom:20px;border:1px solid var(--border)}
+.bk-chef-avatar{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.bk-chef-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;color:var(--warm-black)}
+.bk-chef-meta{font-size:12px;color:var(--warm-gray);margin-top:2px}
+.bk-chef-price{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;color:var(--olive);margin-left:auto}
+/* Calendar style date picker */
+.date-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px}
+.date-day-lbl{text-align:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm-gray2);padding:4px 0;font-weight:500}
+.date-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:var(--warm-black)}
+.date-cell:hover:not(.empty):not(.past){background:rgba(92,112,80,.12);color:var(--olive)}
+.date-cell.selected{background:var(--olive);color:white}
+.date-cell.today{border:1.5px solid var(--olive);color:var(--olive)}
+.date-cell.past{color:var(--warm-gray2);cursor:default}
+.date-cell.empty{cursor:default}
+/* Guest counter */
+.guest-counter{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:14px;padding:16px 20px;border:1px solid var(--border);margin-bottom:12px}
+.guest-info h4{font-size:15px;font-weight:500;color:var(--warm-black)}
+.guest-info p{font-size:12px;color:var(--warm-gray);font-weight:300;margin-top:2px}
+.counter-ctrl{display:flex;align-items:center;gap:14px}
+.counter-btn{width:34px;height:34px;border-radius:99px;border:1.5px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--warm-black);transition:all .2s;line-height:1}
+.counter-btn:active{transform:scale(.9)}
+.counter-btn.disabled{opacity:.3;cursor:default}
+.counter-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--warm-black);min-width:28px;text-align:center}
+/* Menu packages */
+.pkg-card{background:white;border-radius:14px;padding:16px;border:2px solid var(--border);margin-bottom:10px;cursor:pointer;transition:all .2s}
+.pkg-card.selected{border-color:var(--olive);background:rgba(92,112,80,.04)}
+.pkg-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px}
+.pkg-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;color:var(--warm-black)}
+.pkg-price{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;color:var(--olive)}
+.pkg-desc{font-size:12.5px;color:var(--warm-gray);font-weight:300;line-height:1.5;margin-bottom:8px}
+.pkg-tags{display:flex;flex-wrap:wrap;gap:5px}
+.pkg-tag{font-size:10px;padding:3px 8px;border-radius:99px;background:var(--cream);color:var(--warm-gray);border:1px solid var(--border);letter-spacing:.04em}
+.pkg-check{width:22px;height:22px;border-radius:99px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.pkg-card.selected .pkg-check{background:var(--olive);border-color:var(--olive)}
+.pkg-card.selected .pkg-check::after{content:'✓';font-size:12px;color:white;font-weight:700}
+/* Order summary */
+.summary-card{background:white;border-radius:16px;padding:18px;border:1px solid var(--border);margin-bottom:14px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(221,216,206,.5)}
+.summary-row:last-child{border-bottom:none;padding-top:12px;margin-top:4px}
+.summary-row .lbl{font-size:13px;color:var(--warm-gray);font-weight:300}
+.summary-row .val{font-size:13px;font-weight:500;color:var(--warm-black)}
+.summary-row.total .lbl{font-family:'Playfair Display',serif;font-size:16px;color:var(--warm-black);font-weight:500}
+.summary-row.total .val{font-family:'Playfair Display',serif;font-size:18px;color:var(--olive);font-weight:700}
+.special-req{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;background:var(--cream);font-family:'Jost',sans-serif;font-size:13px;color:var(--warm-black);resize:none;height:80px;margin-bottom:14px}
+.special-req::placeholder{color:var(--warm-gray2)}
+.special-req:focus{outline:none;border-color:var(--olive-light)}
+.bk-footer{position:absolute;bottom:0;left:0;right:0;background:rgba(245,242,235,.96);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 20px 28px;z-index:10}
+.bk-next-btn{width:100%;padding:15px;background:var(--olive);color:white;border:none;border-radius:12px;font-family:'Jost',sans-serif;font-size:15px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(92,112,80,.3)}
+.bk-next-btn:active{transform:scale(.98);background:var(--olive-dark)}
 
-.status-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 24px 0; flex-shrink: 0;
-}
-.status-time { font-size: 15px; font-weight: 500; color: var(--warm-black); }
-.status-icons { display: flex; gap: 5px; align-items: center; }
-.status-icons svg { width: 16px; height: 16px; fill: var(--warm-black); }
+/* ── CONFIRMATION ── */
+#page-confirm{background:var(--dark);overflow:hidden}
+.confirm-bg{position:absolute;inset:0;pointer-events:none}
+.confirm-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px 32px;text-align:center}
+.confirm-icon{width:88px;height:88px;border-radius:99px;background:var(--olive);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:28px;box-shadow:0 8px 32px rgba(92,112,80,.4);animation:confirmPop .6s cubic-bezier(.34,1.56,.64,1) .2s both}
+@keyframes confirmPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.confirm-content h1{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:white;margin-bottom:10px;line-height:1.2}
+.confirm-content h1 em{color:var(--mustard-light);font-style:italic}
+.confirm-content p{font-size:14px;color:var(--warm-gray2);font-weight:300;line-height:1.7;margin-bottom:32px}
+.confirm-details{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;width:100%;margin-bottom:28px;text-align:left}
+.confirm-detail-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.confirm-detail-row:last-child{border-bottom:none}
+.confirm-detail-icon{width:32px;height:32px;border-radius:10px;background:rgba(200,150,42,.15);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.confirm-detail-lbl{font-size:11px;color:var(--warm-gray2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px}
+.confirm-detail-val{font-size:14px;font-weight:500;color:white}
+.confirm-code{font-size:11px;color:var(--mustard-light);letter-spacing:.14em;margin-bottom:32px}
+.confirm-home-btn{width:100%;padding:16px;background:var(--olive);color:white;border:none;border-radius:13px;font-family:'Jost',sans-serif;font-size:15px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(92,112,80,.4)}
 
-.top-bar {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 16px 24px 0; flex-shrink: 0;
-}
-.page-title h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px; font-weight: 500; color: var(--warm-black); line-height: 1.1;
-}
-.page-title p { font-size: 13px; color: var(--warm-gray); margin-top: 3px; font-weight: 300; }
-.brand-mark {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 500; color: var(--olive); letter-spacing: .02em;
-}
+/* ── EXPLORE ── */
+#page-explore{background:#1E2A1C}
+.map-header{padding:8px 20px 12px;flex-shrink:0;position:relative;z-index:2}
+.map-header h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:white;margin-bottom:2px}
+.map-header p{font-size:12px;color:var(--warm-gray2);font-weight:300}
+.map-search{margin:0 16px 10px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:11px 14px;position:relative;z-index:2}
+.map-search svg{width:16px;height:16px;stroke:var(--warm-gray2);flex-shrink:0;fill:none}
+.map-search span{font-size:13px;color:var(--warm-gray2)}
+.map-container{flex:1;position:relative;overflow:hidden}
+.chef-pin{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:5;animation:pinDrop .6s cubic-bezier(.34,1.56,.64,1) forwards;animation-delay:var(--pd,0s);opacity:0;transform:translateY(-20px) scale(0)}
+@keyframes pinDrop{to{opacity:1;transform:translateY(0) scale(1)}}
+.pin-bubble{background:white;border-radius:12px;padding:6px 10px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;gap:6px;white-space:nowrap;position:relative;border:2px solid transparent;transition:all .2s}
+.pin-bubble::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:7px solid transparent;border-bottom:none;border-top-color:white}
+.pin-bubble.active{border-color:var(--mustard);background:var(--dark)}
+.pin-bubble.active .pin-name{color:white}
+.pin-bubble.active::after{border-top-color:var(--dark)}
+.pin-emoji{font-size:14px}
+.pin-name{font-size:11px;font-weight:500;color:var(--warm-black)}
+.pin-price{font-size:10px;color:var(--mustard);font-weight:500}
+.map-drawer{position:absolute;bottom:0;left:0;right:0;background:var(--cream);border-radius:24px 24px 0 0;padding:12px 0 84px;z-index:10;box-shadow:0 -8px 32px rgba(0,0,0,.2)}
+.drawer-handle{width:36px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 12px}
+.drawer-lbl{padding:0 20px 8px;font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--warm-gray)}
+.map-chef-list{overflow-x:auto;display:flex;gap:12px;padding:0 16px;scrollbar-width:none}
+.map-chef-list::-webkit-scrollbar{display:none}
+.map-chef-card{flex-shrink:0;width:150px;background:white;border-radius:14px;overflow:hidden;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.08);transition:transform .2s;border:2px solid transparent}
+.map-chef-card:active{transform:scale(.97)}
+.map-chef-card.selected{border-color:var(--mustard)}
+.map-card-photo{height:76px;width:100%;display:flex;align-items:center;justify-content:center;font-size:36px}
+.map-card-body{padding:9px 10px}
+.map-card-body h5{font-family:'Playfair Display',serif;font-size:12.5px;font-weight:500;color:var(--warm-black);margin-bottom:2px}
+.map-card-body span{font-size:11px;color:var(--olive);font-weight:500}
+.map-card-price{font-size:11px;color:var(--warm-gray);margin-top:3px}
 
-.scroll-content {
-  flex: 1; overflow-y: auto; padding-bottom: 80px; scrollbar-width: none;
-}
-.scroll-content::-webkit-scrollbar { display: none; }
+/* ── CONCIERGE ── */
+#page-concierge{background:var(--dark);overflow:hidden}
+.conc-page-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.conc-pg-header{padding:12px 20px 0;flex-shrink:0;position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center}
+.conc-pg-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:400;color:rgba(255,255,255,.8);letter-spacing:.06em}
+.conc-hero{padding:20px 24px 14px;position:relative;z-index:2;flex-shrink:0}
+.conc-avail-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(200,150,42,.2);border:1px solid rgba(200,150,42,.4);border-radius:99px;padding:5px 12px;margin-bottom:12px}
+.conc-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--mustard-light);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(232,184,75,.2)}50%{box-shadow:0 0 0 6px rgba(232,184,75,.08)}}
+.conc-avail-badge span{font-size:10px;color:var(--mustard-light);font-weight:500;letter-spacing:.12em;text-transform:uppercase}
+.conc-hero h1{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:white;line-height:1.15;margin-bottom:8px}
+.conc-hero h1 em{color:var(--mustard-light);font-style:italic}
+.conc-hero p{font-size:13px;color:var(--warm-gray2);line-height:1.6;font-weight:300}
+.chat-area{flex:1;overflow-y:auto;padding:4px 16px 10px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none;position:relative;z-index:2}
+.chat-area::-webkit-scrollbar{display:none}
+.chat-msg{max-width:85%;display:flex;flex-direction:column;gap:4px;opacity:0;animation:msgIn .4s ease forwards;animation-delay:var(--md,0s)}
+@keyframes msgIn{to{opacity:1}}
+.chat-msg.bot{align-self:flex-start}
+.chat-msg.user{align-self:flex-end}
+.msg-bubble{padding:11px 13px;border-radius:16px;font-size:13px;line-height:1.5;font-weight:300}
+.bot .msg-bubble{background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);border-radius:4px 16px 16px 16px;border:1px solid rgba(255,255,255,.08)}
+.user .msg-bubble{background:var(--olive);color:white;border-radius:16px 16px 4px 16px}
+.msg-label{font-size:10px;color:var(--warm-gray);letter-spacing:.06em}
+.bot .msg-label{padding-left:4px}
+.user .msg-label{padding-right:4px;text-align:right}
+.bot-avatar{width:26px;height:26px;border-radius:99px;background:linear-gradient(135deg,var(--mustard),var(--olive));display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-bottom:3px}
+.sug-chips{display:flex;flex-wrap:wrap;gap:7px;padding:0 16px 8px;position:relative;z-index:2;flex-shrink:0}
+.sug-chip{padding:7px 13px;border:1px solid rgba(200,150,42,.4);border-radius:99px;background:rgba(200,150,42,.08);font-size:11.5px;color:var(--mustard-light);cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Jost',sans-serif}
+.chat-input-bar{padding:8px 16px 24px;flex-shrink:0;position:relative;z-index:2}
+.chat-input-wrap{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:11px 13px}
+.chat-input-wrap svg{width:15px;height:15px;stroke:var(--warm-gray2);flex-shrink:0;fill:none;stroke-width:1.8}
+.chat-input-wrap span{flex:1;font-size:13px;color:var(--warm-gray2)}
+.send-btn{width:30px;height:30px;border-radius:99px;background:var(--mustard);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s}
+.send-btn:active{transform:scale(.9)}
+.send-btn svg{width:13px;height:13px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* Booking card */
-.booking-card {
-  margin: 16px 16px 0;
-  background: var(--white);
-  border-radius: 20px; padding: 20px;
-  box-shadow: 0 2px 16px rgba(0,0,0,.06);
-}
-.section-label {
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--warm-gray); margin-bottom: 12px;
-}
-.service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-.service-btn {
-  padding: 14px 8px; border: 1.5px solid var(--border);
-  border-radius: 12px; background: var(--cream);
-  font-family: 'Jost', sans-serif; font-size: 13.5px; font-weight: 500;
-  color: var(--warm-black); cursor: pointer; transition: all .2s; text-align: center;
-}
-.service-btn.active { border-color: var(--olive); background: var(--olive); color: white; }
+/* ── BOTTOM NAV ── */
+.bnav{position:absolute;bottom:0;left:0;right:0;backdrop-filter:blur(12px);display:flex;padding:8px 0 20px;z-index:100}
+.bnav.lt{background:rgba(245,242,235,.96);border-top:1px solid var(--border)}
+.bnav.dk{background:rgba(20,20,18,.96);border-top:1px solid rgba(255,255,255,.08)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0}
+.nav-item svg{width:22px;height:22px;stroke-width:1.5;fill:none}
+.nav-item span{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.bnav.lt .nav-item.active svg{stroke:var(--olive)}
+.bnav.lt .nav-item.active span{color:var(--olive)}
+.bnav.lt .nav-item:not(.active) svg{stroke:var(--warm-gray2)}
+.bnav.lt .nav-item:not(.active) span{color:var(--warm-gray2)}
+.bnav.dk .nav-item.active svg{stroke:var(--mustard-light)}
+.bnav.dk .nav-item.active span{color:var(--mustard-light)}
+.bnav.dk .nav-item:not(.active) svg{stroke:rgba(255,255,255,.3)}
+.bnav.dk .nav-item:not(.active) span{color:rgba(255,255,255,.3)}
 
-.select-field {
-  width: 100%; padding: 14px 16px;
-  border: 1.5px solid var(--border); border-radius: 12px;
-  background: var(--cream); font-family: 'Jost', sans-serif;
-  font-size: 13.5px; color: var(--warm-gray);
-  appearance: none; margin-bottom: 10px; cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8578' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 16px center;
-}
-.date-field {
-  width: 100%; padding: 14px 16px;
-  border: 1.5px solid var(--border); border-radius: 12px;
-  background: var(--cream); font-family: 'Jost', sans-serif;
-  font-size: 13.5px; color: var(--warm-gray); margin-bottom: 16px;
-}
-.search-btn {
-  width: 100%; padding: 15px;
-  background: var(--olive); color: white; border: none; border-radius: 12px;
-  font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500;
-  letter-spacing: .04em; cursor: pointer; transition: background .2s, transform .15s;
-  box-shadow: 0 4px 16px rgba(92,112,80,.3);
-}
-.search-btn:active { background: var(--olive-dark); transform: scale(.98); }
+/* ── SAVED PAGE ── */
+#page-saved{background:var(--cream)}
+.saved-hero{padding:0 20px 0;flex-shrink:0;position:relative;z-index:2}
+.saved-hero h2{font-family:"Playfair Display",serif;font-size:26px;font-weight:500;color:var(--warm-black)}
+.saved-hero p{font-size:13px;color:var(--warm-gray);margin-top:3px;font-weight:300}
+.saved-tabs{display:flex;gap:0;margin:14px 20px 0;background:rgba(0,0,0,.04);border-radius:12px;padding:3px;flex-shrink:0;position:relative;z-index:2}
+.saved-tab{flex:1;padding:9px;border:none;background:transparent;border-radius:9px;font-family:"Jost",sans-serif;font-size:12.5px;font-weight:500;color:var(--warm-gray);cursor:pointer;transition:all .25s}
+.saved-tab.active{background:white;color:var(--warm-black);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.saved-scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding:14px 16px 90px;position:relative;z-index:2}
+.saved-scroll::-webkit-scrollbar{display:none}
+.saved-panel{display:none}
+.saved-panel.active{display:block}
+/* saved chef card */
+.sv-chef-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07);margin-bottom:14px;cursor:pointer;transition:transform .2s}
+.sv-chef-card:active{transform:scale(.99)}
+.sv-chef-img{height:170px;width:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.sv-chef-img::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.5) 100%)}
+.sv-chef-img-info{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;z-index:1}
+.sv-chef-img-info h4{font-family:"Playfair Display",serif;font-size:18px;font-weight:500;color:white;margin-bottom:2px}
+.sv-chef-img-info span{font-size:11px;color:rgba(255,255,255,.8);font-weight:400;letter-spacing:.04em}
+.sv-chef-body{padding:12px 16px 14px;display:flex;align-items:center;justify-content:space-between}
+.sv-chef-meta{display:flex;gap:10px;align-items:center}
+.sv-meta-pill{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--warm-gray);font-weight:400}
+.sv-meta-pill svg{width:12px;height:12px;fill:var(--gold);flex-shrink:0}
+.sv-chef-actions{display:flex;gap:8px}
+.sv-book-btn{padding:9px 16px;background:var(--olive);color:white;border:none;border-radius:9px;font-family:"Jost",sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
+.sv-unsave-btn{width:36px;height:36px;border:1.5px solid var(--border);border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.sv-unsave-btn svg{width:15px;height:15px;stroke:#E05555;fill:#E05555}
+/* saved experience cards */
+.sv-exp-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--border);display:flex;gap:14px;align-items:flex-start}
+.sv-exp-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.sv-exp-info h5{font-family:"Playfair Display",serif;font-size:15px;font-weight:500;color:var(--warm-black);margin-bottom:3px}
+.sv-exp-info p{font-size:12px;color:var(--warm-gray);font-weight:300;line-height:1.4}
+.sv-exp-tag{display:inline-block;margin-top:6px;font-size:10px;padding:3px 9px;border-radius:99px;background:rgba(92,112,80,.1);color:var(--olive);font-weight:500;letter-spacing:.06em}
+/* empty state */
+.saved-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 32px;text-align:center;opacity:0;animation:fadeUp .5s ease .1s forwards}
+.saved-empty-icon{font-size:52px;margin-bottom:18px;opacity:.5}
+.saved-empty h4{font-family:"Playfair Display",serif;font-size:20px;font-weight:500;color:var(--warm-black);margin-bottom:8px}
+.saved-empty p{font-size:13px;color:var(--warm-gray);font-weight:300;line-height:1.6}
+.saved-empty-btn{margin-top:20px;padding:12px 24px;background:var(--olive);color:white;border:none;border-radius:12px;font-family:"Jost",sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+/* mustard branches on saved */
+.saved-branch-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 
-/* Concierge */
-.concierge-wrap { padding: 20px 16px 0; }
-.concierge-card { background: var(--dark); border-radius: 18px; padding: 22px 20px; }
-.concierge-label {
-  font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--olive-light); margin-bottom: 8px;
-}
-.concierge-card h3 {
-  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500;
-  color: white; line-height: 1.3; margin-bottom: 6px;
-}
-.concierge-card p { font-size: 13px; color: var(--warm-gray2); margin-bottom: 16px; font-weight: 300; }
-.concierge-btn {
-  padding: 12px 20px; background: white; color: var(--warm-black);
-  border: none; border-radius: 99px; font-family: 'Jost', sans-serif;
-  font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s;
-}
-
-/* Section headings */
-.section-heading {
-  padding: 20px 20px 4px;
-  display: flex; justify-content: space-between; align-items: baseline;
-}
-.section-heading h3 {
-  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--warm-black);
-}
-.section-heading span { font-size: 11px; color: var(--olive); font-weight: 500; letter-spacing: .04em; cursor: pointer; }
-.section-sub { padding: 0 20px 12px; font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--warm-gray2); }
-
-/* Chef cards */
-.chef-cards { padding: 4px 16px 0; display: flex; flex-direction: column; gap: 16px; }
-
-.chef-card {
-  background: white; border-radius: 18px; overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,.07);
-  opacity: 0; transform: translateY(16px);
-  animation: cardIn .5s ease forwards;
-  animation-delay: var(--d, 0s);
-}
-@keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-
-.chef-photo-bg {
-  width: 100%; height: 190px;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-}
-.chef-photo-bg::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.08) 100%);
-}
-
-.rating-badge {
-  position: absolute; top: 12px; right: 12px;
-  background: white; border-radius: 99px; padding: 5px 10px;
-  display: flex; align-items: center; gap: 4px;
-  font-size: 12px; font-weight: 500; color: var(--warm-black);
-  box-shadow: 0 2px 8px rgba(0,0,0,.15);
-}
-.rating-badge svg { width: 12px; height: 12px; fill: var(--gold); }
-
-.chef-card-body { padding: 16px; }
-.chef-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
-.chef-card-top h4 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; color: var(--warm-black); }
-.chef-price { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; color: var(--warm-black); }
-.chef-cuisine { font-size: 12px; color: var(--olive); font-weight: 500; letter-spacing: .02em; margin-bottom: 6px; }
-.chef-desc { font-size: 12.5px; color: var(--warm-gray); line-height: 1.5; font-weight: 300; margin-bottom: 14px; }
-
-.chef-card-actions { display: flex; gap: 10px; align-items: center; }
-.book-btn {
-  flex: 1; padding: 13px;
-  background: var(--olive); color: white; border: none; border-radius: 10px;
-  font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500;
-  letter-spacing: .04em; cursor: pointer; transition: background .2s, transform .15s;
-}
-.book-btn:active { background: var(--olive-dark); transform: scale(.98); }
-
-.save-btn {
-  width: 44px; height: 44px;
-  border: 1.5px solid var(--border); border-radius: 10px;
-  background: var(--cream); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all .2s; flex-shrink: 0;
-}
-.save-btn svg { width: 18px; height: 18px; stroke: var(--warm-gray); fill: none; stroke-width: 1.8; }
-.save-btn.saved svg { fill: #E05555; stroke: #E05555; }
-.save-btn:active { transform: scale(.9); }
-
-/* Bottom nav */
-.bottom-nav {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(245,242,235,.96); backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
-  display: flex; padding: 8px 0 20px;
-}
-.nav-item {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; gap: 4px; cursor: pointer; padding: 4px 0;
-}
-.nav-item svg { width: 22px; height: 22px; stroke-width: 1.5; fill: none; }
-.nav-item span { font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
-.nav-item.active svg { stroke: var(--olive); }
-.nav-item.active span { color: var(--olive); }
-.nav-item:not(.active) svg { stroke: var(--warm-gray2); }
-.nav-item:not(.active) span { color: var(--warm-gray2); }
+/* ── USER PROFILE PAGE ── */
+#page-userprofile{background:var(--cream)}
+.up-header{position:relative;flex-shrink:0}
+.up-cover{height:180px;position:relative;overflow:hidden}
+.up-cover-gradient{width:100%;height:100%;background:linear-gradient(135deg,#2A3A28,#1E1E1B)}
+.up-cover-branches{position:absolute;inset:0;pointer-events:none}
+.up-avatar-row{position:absolute;bottom:-36px;left:20px;display:flex;align-items:flex-end;gap:14px;z-index:3}
+.up-avatar{width:80px;height:80px;border-radius:99px;background:linear-gradient(135deg,var(--mustard),var(--olive));display:flex;align-items:center;justify-content:center;font-size:34px;border:3px solid white;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.up-edit-btn{position:absolute;top:12px;right:12px;padding:8px 16px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);border-radius:99px;font-family:"Jost",sans-serif;font-size:12px;font-weight:500;color:white;cursor:pointer;z-index:3}
+.up-info-row{padding:44px 20px 14px;flex-shrink:0}
+.up-name{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--warm-black);margin-bottom:2px}
+.up-handle{font-size:13px;color:var(--warm-gray);margin-bottom:10px}
+.up-bio-text{font-size:13px;color:var(--warm-gray);font-weight:300;line-height:1.5;margin-bottom:12px}
+.up-stats-row{display:flex;gap:0;margin-bottom:0}
+.up-stat{flex:1;text-align:center;padding:12px 0;background:white;border-radius:0;border-right:1px solid var(--border)}
+.up-stat:first-child{border-radius:12px 0 0 12px}
+.up-stat:last-child{border-radius:0 12px 12px 0;border-right:none}
+.up-stat-val{font-family:"Playfair Display",serif;font-size:20px;font-weight:700;color:var(--warm-black)}
+.up-stat-lbl{font-size:10px;color:var(--warm-gray2);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.up-scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:90px}
+.up-scroll::-webkit-scrollbar{display:none}
+.up-section{padding:18px 20px 0}
+.up-section-title{font-family:"Playfair Display",serif;font-size:17px;font-weight:500;color:var(--warm-black);margin-bottom:12px}
+/* upcoming booking */
+.up-booking-card{background:var(--dark);border-radius:18px;padding:18px;position:relative;overflow:hidden;margin-bottom:10px}
+.up-booking-card::before{content:"";position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(200,150,42,.2) 0%,transparent 70%);border-radius:50%}
+.up-booking-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mustard-light);margin-bottom:8px;font-weight:500}
+.up-booking-name{font-family:"Playfair Display",serif;font-size:17px;font-weight:500;color:white;margin-bottom:6px}
+.up-booking-details{display:flex;gap:14px;flex-wrap:wrap}
+.up-booking-detail{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--warm-gray2);font-weight:300}
+.up-booking-detail svg{width:12px;height:12px;stroke:var(--mustard-light);fill:none}
+.up-booking-actions{display:flex;gap:8px;margin-top:14px}
+.up-view-btn{padding:9px 18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;border-radius:8px;font-family:"Jost",sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+.up-msg-btn{padding:9px 18px;background:var(--mustard);border:none;color:white;border-radius:8px;font-family:"Jost",sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+/* past booking row */
+.up-past-row{display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:12px 14px;margin-bottom:9px;border:1px solid var(--border)}
+.up-past-avatar{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.up-past-info{flex:1}
+.up-past-info h5{font-family:"Playfair Display",serif;font-size:14px;font-weight:500;color:var(--warm-black);margin-bottom:2px}
+.up-past-info p{font-size:11.5px;color:var(--warm-gray);font-weight:300}
+.up-past-rating{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.up-past-stars{display:flex;gap:1px}
+.up-past-stars svg{width:10px;height:10px;fill:var(--gold)}
+.up-past-price{font-size:11px;color:var(--warm-gray);font-family:"Playfair Display",serif}
+/* preferences */
+.up-pref-grid{display:flex;flex-wrap:wrap;gap:8px}
+.up-pref-chip{padding:8px 14px;border-radius:99px;font-size:12px;font-weight:500;font-family:"Jost",sans-serif;cursor:pointer;transition:all .2s}
+.up-pref-chip.cuisine{background:rgba(92,112,80,.1);color:var(--olive);border:1px solid rgba(92,112,80,.25)}
+.up-pref-chip.vibe{background:rgba(200,150,42,.1);color:var(--mustard);border:1px solid rgba(200,150,42,.25)}
+.up-pref-chip.diet{background:rgba(138,133,120,.1);color:var(--warm-gray);border:1px solid var(--border)}
+/* membership */
+.up-member-card{background:linear-gradient(135deg,#2A3A28,#1A2A18);border-radius:18px;padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.up-member-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--mustard),#A07020);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.up-member-info h4{font-family:"Playfair Display",serif;font-size:16px;font-weight:500;color:white;margin-bottom:3px}
+.up-member-info p{font-size:12px;color:var(--warm-gray2);font-weight:300}
+.up-member-badge{margin-left:auto;padding:5px 11px;background:var(--mustard);border-radius:99px;font-size:10px;font-weight:500;color:white;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 </style>
 </head>
 <body>
-<div class="phone">
- <div class="screen">
+<div class="phone"><div class="screen">
 
-  <!-- SPLASH -->
-  <div id="splash">
-    <div class="splash-content">
-      <div class="splash-logo">Plāto</div>
-      <div class="splash-divider"></div>
-      <div class="splash-tagline">Exquisite Private Dining</div>
+<!-- ═══ SPLASH ═══ -->
+<div id="splash">
+  <svg viewBox="0 0 390 844" fill="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.18">
+    <path d="M-20 844 C40 700 80 580 60 480 C40 380 0 320 20 240 C40 160 80 120 100 60" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M60 480 C100 460 140 440 160 400 C180 360 170 320 200 290" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+    <path d="M20 240 C60 230 90 210 100 180" stroke="#C8962A" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M410 844 C360 720 340 600 360 500 C380 400 410 340 400 250 C390 160 360 110 370 50" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M360 500 C320 480 290 450 270 410 C250 370 260 330 240 300" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="200" cy="288" rx="9" ry="5" fill="#C8962A" opacity=".6" transform="rotate(-30 200 288)"/>
+    <ellipse cx="160" cy="400" rx="10" ry="6" fill="#C8962A" opacity=".55" transform="rotate(-15 160 400)"/>
+    <ellipse cx="240" cy="300" rx="9" ry="5" fill="#C8962A" opacity=".5" transform="rotate(-10 240 300)"/>
+  </svg>
+  <div class="splash-content">
+    <div class="splash-logo">Plāto</div>
+    <div class="splash-divider"></div>
+    <div class="splash-tagline">Exquisite Private Dining</div>
+  </div>
+</div>
+
+<!-- ═══ ONBOARDING ═══ -->
+<div id="onboarding">
+  <svg class="ob-bg" viewBox="0 0 390 844" fill="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.15">
+    <path d="M-20 844 C40 700 80 580 60 480 C40 380 0 320 20 240 C40 160 80 120 100 60" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M60 480 C100 460 140 440 160 400 C180 360 170 320 200 290" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+    <path d="M410 844 C360 720 340 600 360 500 C380 400 410 340 400 250" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M360 500 C320 480 290 450 270 410" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="200" cy="288" rx="10" ry="6" fill="#C8962A" opacity=".6" transform="rotate(-30 200 288)"/>
+    <ellipse cx="160" cy="400" rx="11" ry="6" fill="#C8962A" opacity=".55" transform="rotate(-15 160 400)"/>
+    <ellipse cx="270" cy="410" rx="9" ry="5" fill="#C8962A" opacity=".5" transform="rotate(10 270 410)"/>
+  </svg>
+  <div class="ob-slides">
+    <div class="ob-slide active" id="ob-0">
+      <div class="ob-icon" style="background:linear-gradient(135deg,rgba(92,112,80,.3),rgba(92,112,80,.1))">👨‍🍳</div>
+      <h2>World-Class Chefs<br><em>At Your Table</em></h2>
+      <p>Browse vetted private chefs across every cuisine — from Roman pasta masters to Japanese sushi artists.</p>
+    </div>
+    <div class="ob-slide" id="ob-1">
+      <div class="ob-icon" style="background:linear-gradient(135deg,rgba(200,150,42,.25),rgba(200,150,42,.08))">🍽️</div>
+      <h2>Curated<br><em>Experiences</em></h2>
+      <p>Every chef creates a bespoke menu for your event. Intimate dinners, celebrations, cooking classes, and more.</p>
+    </div>
+    <div class="ob-slide" id="ob-2">
+      <div class="ob-icon" style="background:linear-gradient(135deg,rgba(122,143,110,.3),rgba(122,143,110,.1))">✦</div>
+      <h2>Your Personal<br><em>Concierge</em></h2>
+      <p>Can't decide? Our luxury concierge curates the perfect chef, menu, and setting for any occasion.</p>
     </div>
   </div>
-
-  <!-- APP -->
-  <div id="app">
-
-    <div class="status-bar">
-      <span class="status-time">9:41</span>
-      <div class="status-icons">
-        <svg viewBox="0 0 16 16"><rect x="0" y="10" width="3" height="6"/><rect x="4.5" y="7" width="3" height="9"/><rect x="9" y="4" width="3" height="12"/><rect x="13.5" y="1" width="3" height="15" opacity=".3"/></svg>
-        <svg viewBox="0 0 20 12" style="fill:none"><rect x="0" y="1.5" width="16" height="9" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="1.5" y="3" width="11" height="6" rx="1" fill="currentColor"/><path d="M17 4.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
+  <div class="ob-bottom">
+    <div class="ob-dots">
+      <div class="ob-dot active" id="dot-0"></div>
+      <div class="ob-dot" id="dot-1"></div>
+      <div class="ob-dot" id="dot-2"></div>
     </div>
+    <button class="ob-next-btn" id="ob-next-btn" onclick="obNext()">Get Started</button>
+    <div class="ob-skip" onclick="finishOnboarding()">Skip</div>
+  </div>
+</div>
 
-    <div class="top-bar">
-      <div class="page-title">
-        <h2>Plan Experience</h2>
-        <p>Discover refined private dining</p>
-      </div>
-      <div class="brand-mark">Plāto</div>
+<!-- ═══ APP ═══ -->
+<div id="app">
+
+  <!-- ── HOME ── -->
+  <div id="page-home" class="page active">
+    <div class="branch-bg">
+      <svg viewBox="0 0 390 844" fill="none" style="width:100%;height:100%;opacity:.08">
+        <path d="M-20 844 C40 700 80 580 60 480 C40 380 0 320 20 240 C40 160 80 120 100 60" stroke="#C8962A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 480 C100 460 140 440 160 400 C180 360 170 320 200 290" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+        <path d="M20 240 C60 230 90 210 100 180 C110 150 90 130 100 100" stroke="#C8962A" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M410 844 C360 720 340 600 360 500 C380 400 410 340 400 250 C390 160 360 110 370 50" stroke="#C8962A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M360 500 C320 480 290 450 270 410 C250 370 260 330 240 300" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+        <path d="M200 290 C230 265 250 240 260 210" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="200" cy="288" rx="11" ry="7" fill="#C8962A" opacity=".7" transform="rotate(-30 200 288)"/>
+        <ellipse cx="160" cy="400" rx="12" ry="7" fill="#C8962A" opacity=".65" transform="rotate(-15 160 400)"/>
+        <ellipse cx="100" cy="180" rx="11" ry="7" fill="#C8962A" opacity=".6" transform="rotate(25 100 180)"/>
+        <ellipse cx="260" cy="210" rx="9" ry="5" fill="#C8962A" opacity=".55" transform="rotate(15 260 210)"/>
+      </svg>
     </div>
-
+    <div class="sb" style="background:transparent"><span class="sb-time" style="color:var(--warm-black)">9:41</span><div class="sb-icons"><svg viewBox="0 0 16 16" style="fill:var(--warm-black)"><rect x="0" y="10" width="3" height="6"/><rect x="4.5" y="7" width="3" height="9"/><rect x="9" y="4" width="3" height="12"/><rect x="13.5" y="1" width="3" height="15" opacity=".3"/></svg><svg viewBox="0 0 20 12" style="fill:none;stroke:var(--warm-black);stroke-width:1.2"><rect x="0" y="1.5" width="16" height="9" rx="2"/><rect x="1.5" y="3" width="11" height="6" rx="1" fill="var(--warm-black)"/><path d="M17 4.5v3" stroke-linecap="round"/></svg></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:12px 24px 0;flex-shrink:0;position:relative;z-index:2">
+      <div><h2 style="font-family:'Playfair Display',serif;font-size:25px;font-weight:500;color:var(--warm-black)">Plan Experience</h2><p style="font-size:13px;color:var(--warm-gray);margin-top:2px;font-weight:300">Discover refined private dining</p></div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--olive)">Plāto</div>
+    </div>
     <div class="scroll-content">
-
-      <!-- Booking -->
       <div class="booking-card">
-        <div class="section-label">1. Select Service Type</div>
+        <div class="sec-lbl">1. Select Service Type</div>
         <div class="service-grid">
           <button class="service-btn active" onclick="selectService(this)">Private</button>
           <button class="service-btn" onclick="selectService(this)">Catering</button>
           <button class="service-btn" onclick="selectService(this)">Meal Prep</button>
           <button class="service-btn" onclick="selectService(this)">Cooking Class</button>
         </div>
-        <div class="section-label">2. Select Cuisine</div>
-        <select class="select-field">
-          <option value="" disabled selected>Cuisine (Optional)</option>
-          <option>Italian</option><option>Japanese</option><option>French</option>
-          <option>Mediterranean</option><option>Indian</option><option>American</option><option>Plant-Based</option>
-        </select>
-        <div class="section-label">3. Select Date</div>
+        <div class="sec-lbl">2. Select Cuisine</div>
+        <select class="sel-field"><option value="" disabled selected>Cuisine (Optional)</option><option>Italian</option><option>Japanese</option><option>French</option><option>Mediterranean</option><option>Indian</option><option>Plant-Based</option></select>
+        <div class="sec-lbl">3. Select Date</div>
         <input type="date" class="date-field">
-        <button class="search-btn">Search Available Chefs</button>
+        <button class="search-btn" onclick="switchNav('explore')">Search Available Chefs</button>
       </div>
-
-      <!-- Concierge -->
-      <div class="concierge-wrap">
-        <div class="concierge-card">
-          <div class="concierge-label">Personal Concierge</div>
+      <div class="conc-wrap">
+        <div class="conc-card">
+          <div class="conc-lbl">Personal Concierge</div>
           <h3>Can't find the perfect match?</h3>
           <p>Let our luxury concierge curate the experience for you.</p>
-          <button class="concierge-btn">Ask Plāto Concierge</button>
+          <button class="conc-btn" onclick="switchNav('concierge')">Ask Plāto Concierge</button>
         </div>
       </div>
-
-      <!-- Featured -->
-      <div class="section-heading"><h3>Featured Artists</h3><span>See all</span></div>
-      <div class="section-sub">Near You</div>
+      <div class="sec-heading"><h3>Featured Artists</h3><span>See all</span></div>
+      <div class="sec-sub">Near You</div>
       <div class="chef-cards">
-
-        <div class="chef-card" style="--d:.1s">
-          <div style="position:relative">
-            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#8B7355,#3D3020)">
-              <span style="font-size:80px;opacity:.35">🍝</span>
-            </div>
-            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.9</div>
-          </div>
-          <div class="chef-card-body">
-            <div class="chef-card-top"><h4>Chef Mario Rossi</h4><div class="chef-price">$85/head</div></div>
-            <div class="chef-cuisine">Italian</div>
-            <div class="chef-desc">Specializing in handmade pasta and authentic Roman recipes passed down through generations.</div>
-            <div class="chef-card-actions">
-              <button class="book-btn">Book Experience</button>
-              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-            </div>
-          </div>
+        <div class="chef-card" style="--d:.1s" onclick="openChefProfile('mario')">
+          <div style="position:relative"><div class="chef-photo-bg" style="background:linear-gradient(135deg,#8B7355,#3D3020)"><span style="font-size:90px;opacity:.35">🍝</span></div><div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.9</div></div>
+          <div class="chef-card-body"><div class="chef-card-top"><h4>Chef Mario Rossi</h4><div class="chef-price">$85/head</div></div><div class="chef-cuisine">Italian</div><div class="chef-desc">Specializing in handmade pasta and authentic Roman recipes passed down through generations.</div><div class="chef-actions"><button class="book-btn" onclick="event.stopPropagation();openBooking('mario')">Book Experience</button><button class="save-btn" onclick="event.stopPropagation();toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div></div>
         </div>
-
-        <div class="chef-card" style="--d:.22s">
-          <div style="position:relative">
-            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#C4956A,#5A3A20)">
-              <span style="font-size:80px;opacity:.35">🍱</span>
-            </div>
-            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.8</div>
-          </div>
-          <div class="chef-card-body">
-            <div class="chef-card-top"><h4>Chef Kenji Tanaka</h4><div class="chef-price">$150/head</div></div>
-            <div class="chef-cuisine">Japanese</div>
-            <div class="chef-desc">Expert sushi master bringing the Tsukiji market experience to your private dining room.</div>
-            <div class="chef-card-actions">
-              <button class="book-btn">Book Experience</button>
-              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-            </div>
-          </div>
+        <div class="chef-card" style="--d:.22s" onclick="openChefProfile('kenji')">
+          <div style="position:relative"><div class="chef-photo-bg" style="background:linear-gradient(135deg,#C4956A,#5A3A20)"><span style="font-size:90px;opacity:.35">🍱</span></div><div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.8</div></div>
+          <div class="chef-card-body"><div class="chef-card-top"><h4>Chef Kenji Tanaka</h4><div class="chef-price">$150/head</div></div><div class="chef-cuisine">Japanese</div><div class="chef-desc">Expert sushi master bringing the Tsukiji market experience to your private dining room.</div><div class="chef-actions"><button class="book-btn" onclick="event.stopPropagation();openBooking('kenji')">Book Experience</button><button class="save-btn" onclick="event.stopPropagation();toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div></div>
         </div>
-
-        <div class="section-heading" style="padding:16px 4px 4px"><h3>Highly Recommended</h3><span>See all</span></div>
-        <div class="section-sub" style="padding:0 4px 8px">Near Manhattan, NY</div>
-
-        <div class="chef-card" style="--d:.34s">
-          <div style="position:relative">
-            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#4A6B5A,#1A3028)">
-              <span style="font-size:80px;opacity:.35">🥗</span>
-            </div>
-            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>5.0</div>
-          </div>
-          <div class="chef-card-body">
-            <div class="chef-card-top"><h4>Chef Isabelle Morel</h4><div class="chef-price">$120/head</div></div>
-            <div class="chef-cuisine">French</div>
-            <div class="chef-desc">Classically trained in Lyon, bringing Michelin-inspired French cuisine to intimate gatherings.</div>
-            <div class="chef-card-actions">
-              <button class="book-btn">Book Experience</button>
-              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-            </div>
-          </div>
-        </div>
-
-        <div class="chef-card" style="--d:.46s">
-          <div style="position:relative">
-            <div class="chef-photo-bg" style="background:linear-gradient(135deg,#7A6A4A,#3A2A10)">
-              <span style="font-size:80px;opacity:.35">🍛</span>
-            </div>
-            <div class="rating-badge"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.7</div>
-          </div>
-          <div class="chef-card-body">
-            <div class="chef-card-top"><h4>Chef Raj Sharma</h4><div class="chef-price">$95/head</div></div>
-            <div class="chef-cuisine">Modern Indian</div>
-            <div class="chef-desc">Award-winning spice artisan crafting contemporary Indian tasting menus for the discerning palate.</div>
-            <div class="chef-card-actions">
-              <button class="book-btn">Book Experience</button>
-              <button class="save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-            </div>
-          </div>
-        </div>
-
+        <div style="height:8px"></div>
       </div>
     </div>
-
-    <!-- Bottom nav -->
-    <div class="bottom-nav">
-      <div class="nav-item active" onclick="setNav(this)">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Home</span>
-      </div>
-      <div class="nav-item" onclick="setNav(this)">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <span>Explore</span>
-      </div>
-      <div class="nav-item" onclick="setNav(this)">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        <span>Saved</span>
-      </div>
-      <div class="nav-item" onclick="setNav(this)">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Profile</span>
-      </div>
+    <div class="bnav lt">
+      <div class="nav-item active" onclick="switchNav('home')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+      <div class="nav-item" onclick="switchNav('explore')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Explore</span></div>
+      <div class="nav-item" onclick="switchNav('saved')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+      <div class="nav-item" onclick="switchNav('userprofile')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
     </div>
-
   </div>
- </div>
-</div>
+
+  <!-- ── CHEF PROFILE ── -->
+  <div id="page-profile" class="page slide-up">
+    <div class="profile-hero" id="profile-hero-bg">
+      <div class="profile-photo" id="profile-photo-emoji" style="background:linear-gradient(135deg,#8B7355,#3D3020)"><span style="font-size:120px;opacity:.4" id="profile-emoji">🍝</span></div>
+      <button class="profile-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="profile-save" id="profile-save-btn" onclick="toggleSave(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      <div class="profile-hero-info">
+        <h1 id="profile-name">Chef Mario Rossi</h1>
+        <div class="cuisine-tag" id="profile-cuisine">Italian · Roman Cuisine</div>
+        <div class="profile-stats">
+          <div class="stat-pill"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><span id="profile-rating">4.9</span></div>
+          <div class="stat-pill">📍 <span id="profile-dist">0.4mi away</span></div>
+          <div class="stat-pill">🍽️ <span id="profile-events">127 events</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="profile-scroll">
+      <div class="profile-section">
+        <h3>About</h3>
+        <p class="profile-bio" id="profile-bio">A third-generation Roman chef with 15 years of experience in Michelin-starred kitchens across Rome and New York. Mario brings the soul of Italian cooking — handmade pasta, wood-fired techniques, and the finest seasonal ingredients — directly to your table.</p>
+      </div>
+      <div class="profile-section" style="padding-top:18px">
+        <h3>Signature Menu</h3>
+        <div class="menu-items" id="profile-menu"></div>
+      </div>
+      <div class="profile-section" style="padding-top:18px">
+        <h3>Availability This Week</h3>
+        <div class="avail-chips" id="profile-avail"></div>
+      </div>
+      <div class="profile-section" style="padding-top:18px">
+        <h3>Reviews</h3>
+        <div class="reviews-list" id="profile-reviews"></div>
+      </div>
+      <div style="height:110px"></div>
+    </div>
+    <div class="profile-book-bar">
+      <div class="profile-price-info">
+        <div class="price" id="profile-price">$85<span style="font-size:14px;font-weight:400">/head</span></div>
+        <div class="price-sub">All-inclusive · min 2 guests</div>
+      </div>
+      <button class="profile-book-btn" onclick="openBookingFromProfile()">Book Experience</button>
+    </div>
+  </div>
+
+  <!-- ── BOOKING FLOW ── -->
+  <div id="page-booking" class="page slide-up">
+    <div class="booking-header">
+      <button class="bk-back" onclick="bookingBack()"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="bk-title" id="bk-title">Book Experience</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="bk-progress" style="width:33%"></div></div>
+    <div class="step-labels">
+      <span class="step-lbl active" id="slbl-0">Details</span>
+      <span class="step-lbl" id="slbl-1">Menu</span>
+      <span class="step-lbl" id="slbl-2">Review</span>
+    </div>
+    <div class="bk-scroll">
+      <!-- Step 1: Date & Guests -->
+      <div class="bk-step active" id="bk-step-0">
+        <h3>Choose Your Date</h3>
+        <p>Select a date and the number of guests for your experience</p>
+        <div class="bk-chef-summary" id="bk-chef-summary">
+          <div class="bk-chef-avatar" id="bk-chef-avatar" style="background:linear-gradient(135deg,#8B7355,#3D3020)">🍝</div>
+          <div><div class="bk-chef-name" id="bk-chef-name">Chef Mario Rossi</div><div class="bk-chef-meta" id="bk-chef-meta">Italian · Private Dining</div></div>
+          <div class="bk-chef-price" id="bk-chef-price">$85/hd</div>
+        </div>
+        <div class="date-grid" id="cal-grid"></div>
+        <div class="guest-counter">
+          <div class="guest-info"><h4>Guests</h4><p>Minimum 2 guests required</p></div>
+          <div class="counter-ctrl">
+            <button class="counter-btn" id="minus-btn" onclick="changeGuests(-1)">−</button>
+            <div class="counter-val" id="guest-count">2</div>
+            <button class="counter-btn" onclick="changeGuests(1)">+</button>
+          </div>
+        </div>
+      </div>
+      <!-- Step 2: Menu Package -->
+      <div class="bk-step" id="bk-step-1">
+        <h3>Choose Your Menu</h3>
+        <p>Select an experience package for your evening</p>
+        <div id="bk-packages"></div>
+      </div>
+      <!-- Step 3: Review -->
+      <div class="bk-step" id="bk-step-2">
+        <h3>Review & Confirm</h3>
+        <p>Almost there — review your booking details</p>
+        <div class="summary-card" id="bk-summary"></div>
+        <textarea class="special-req" placeholder="Special requests, dietary requirements, occasion notes…" rows="3"></textarea>
+        <div style="background:rgba(92,112,80,.08);border:1px solid rgba(92,112,80,.2);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:16px">🔒</span>
+          <p style="font-size:12px;color:var(--warm-gray);font-weight:300;line-height:1.5">Free cancellation up to 48 hours before your event. Your card will be charged after the chef confirms.</p>
+        </div>
+      </div>
+    </div>
+    <div class="bk-footer">
+      <button class="bk-next-btn" id="bk-next-btn" onclick="bookingNext()">Continue to Menu →</button>
+    </div>
+  </div>
+
+  <!-- ── CONFIRMATION ── -->
+  <div id="page-confirm" class="page slide-up">
+    <svg class="confirm-bg" viewBox="0 0 390 844" fill="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.15">
+      <path d="M390 0 C355 90 325 175 345 268 C365 360 392 424 382 528" stroke="#C8962A" stroke-width="4" stroke-linecap="round"/>
+      <path d="M345 268 C305 248 272 215 252 172" stroke="#C8962A" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M0 844 C22 738 12 638 34 538 C56 438 84 376 74 278" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="252" cy="170" rx="10" ry="6" fill="#C8962A" opacity=".7" transform="rotate(-25 252 170)"/>
+      <ellipse cx="74" cy="278" rx="10" ry="6" fill="#C8962A" opacity=".6" transform="rotate(10 74 278)"/>
+    </svg>
+    <div class="sb" style="position:relative;z-index:2"><span class="sb-time" style="color:rgba(255,255,255,.6)">9:41</span></div>
+    <div class="confirm-content">
+      <div class="confirm-icon">🍽️</div>
+      <h1>You're all set,<br><em>enjoy the feast!</em></h1>
+      <p>Your chef has been notified and will confirm within 2 hours. Get ready for an unforgettable evening.</p>
+      <div class="confirm-details" id="confirm-details">
+        <div class="confirm-detail-row">
+          <div class="confirm-detail-icon">👨‍🍳</div>
+          <div><div class="confirm-detail-lbl">Chef</div><div class="confirm-detail-val" id="cd-chef">Chef Mario Rossi</div></div>
+        </div>
+        <div class="confirm-detail-row">
+          <div class="confirm-detail-icon">📅</div>
+          <div><div class="confirm-detail-lbl">Date</div><div class="confirm-detail-val" id="cd-date">Saturday, Mar 8</div></div>
+        </div>
+        <div class="confirm-detail-row">
+          <div class="confirm-detail-icon">👥</div>
+          <div><div class="confirm-detail-lbl">Guests</div><div class="confirm-detail-val" id="cd-guests">2 guests</div></div>
+        </div>
+        <div class="confirm-detail-row">
+          <div class="confirm-detail-icon">💳</div>
+          <div><div class="confirm-detail-lbl">Total</div><div class="confirm-detail-val" id="cd-total">$170</div></div>
+        </div>
+      </div>
+      <div class="confirm-code" id="confirm-code">BOOKING #PLT-2847</div>
+      <button class="confirm-home-btn" onclick="switchNav('home')">Back to Home</button>
+    </div>
+  </div>
+
+  <!-- ── EXPLORE ── -->
+  <div id="page-explore" class="page">
+    <div style="background:#1E2A1C;flex-shrink:0">
+      <div class="sb"><span class="sb-time" style="color:white">9:41</span><div class="sb-icons"><svg viewBox="0 0 16 16" style="fill:white"><rect x="0" y="10" width="3" height="6"/><rect x="4.5" y="7" width="3" height="9"/><rect x="9" y="4" width="3" height="12"/><rect x="13.5" y="1" width="3" height="15" opacity=".3"/></svg></div></div>
+      <div class="map-header"><h2>Explore Chefs</h2><p>8 chefs available near Manhattan, NY</p></div>
+      <div class="map-search"><svg viewBox="0 0 20 20" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/></svg><span>Search area or cuisine…</span></div>
+    </div>
+    <div class="map-container" style="flex:1">
+      <svg viewBox="0 0 390 500" fill="none" style="position:absolute;inset:0;width:100%;height:100%">
+        <rect width="390" height="500" fill="#1E2A1C"/>
+        <rect x="120" y="80" width="80" height="60" rx="8" fill="#2A3F28" opacity=".8"/>
+        <rect x="240" y="160" width="60" height="50" rx="6" fill="#2A3F28" opacity=".6"/>
+        <line x1="0" y1="120" x2="390" y2="120" stroke="#344830" stroke-width="8"/>
+        <line x1="0" y1="230" x2="390" y2="230" stroke="#344830" stroke-width="8"/>
+        <line x1="0" y1="340" x2="390" y2="340" stroke="#344830" stroke-width="8"/>
+        <line x1="80" y1="0" x2="80" y2="500" stroke="#344830" stroke-width="8"/>
+        <line x1="200" y1="0" x2="200" y2="500" stroke="#344830" stroke-width="8"/>
+        <line x1="320" y1="0" x2="320" y2="500" stroke="#344830" stroke-width="8"/>
+        <line x1="0" y1="175" x2="390" y2="175" stroke="#2C3F2A" stroke-width="4"/>
+        <line x1="140" y1="0" x2="140" y2="500" stroke="#2C3F2A" stroke-width="4"/>
+        <line x1="260" y1="0" x2="260" y2="500" stroke="#2C3F2A" stroke-width="4"/>
+        <rect x="86" y="126" width="48" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="86" y="181" width="48" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="146" y="126" width="48" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="206" y="126" width="108" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="206" y="181" width="108" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="86" y="236" width="48" height="88" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="146" y="236" width="48" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="206" y="236" width="108" height="98" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="86" y="346" width="108" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="206" y="346" width="108" height="43" rx="3" fill="#253523" opacity=".9"/>
+        <rect x="0" y="0" width="74" height="115" rx="4" fill="#1A2F3A" opacity=".7"/>
+        <rect x="326" y="0" width="64" height="115" rx="4" fill="#1A2F3A" opacity=".7"/>
+        <circle cx="200" cy="230" r="22" fill="#5C7050" opacity=".12"/>
+        <circle cx="200" cy="230" r="6" fill="#7A8F6E" opacity=".9"/>
+        <circle cx="200" cy="230" r="3" fill="white"/>
+        <path d="M0 500 C25 430 40 360 35 290" stroke="#C8962A" stroke-width="2" stroke-linecap="round" opacity=".2"/>
+        <path d="M35 290 C58 272 76 252 82 228" stroke="#C8962A" stroke-width="1.5" stroke-linecap="round" opacity=".18"/>
+      </svg>
+      <div class="chef-pin" style="left:26%;top:20%;--pd:.3s" onclick="selectPin(this,0)"><div class="pin-bubble active" id="pin-0"><span class="pin-emoji">🍝</span><div><div class="pin-name">Mario R.</div><div class="pin-price">$85/hd</div></div></div></div>
+      <div class="chef-pin" style="left:55%;top:13%;--pd:.5s" onclick="selectPin(this,1)"><div class="pin-bubble" id="pin-1"><span class="pin-emoji">🍱</span><div><div class="pin-name">Kenji T.</div><div class="pin-price">$150/hd</div></div></div></div>
+      <div class="chef-pin" style="left:68%;top:35%;--pd:.7s" onclick="selectPin(this,2)"><div class="pin-bubble" id="pin-2"><span class="pin-emoji">🥗</span><div><div class="pin-name">Isabelle M.</div><div class="pin-price">$120/hd</div></div></div></div>
+      <div class="chef-pin" style="left:16%;top:46%;--pd:.9s" onclick="selectPin(this,3)"><div class="pin-bubble" id="pin-3"><span class="pin-emoji">🍛</span><div><div class="pin-name">Raj S.</div><div class="pin-price">$95/hd</div></div></div></div>
+      <div class="chef-pin" style="left:43%;top:54%;--pd:1.1s" onclick="selectPin(this,4)"><div class="pin-bubble" id="pin-4"><span class="pin-emoji">🥩</span><div><div class="pin-name">Elena V.</div><div class="pin-price">$110/hd</div></div></div></div>
+      <div class="chef-pin" style="left:74%;top:58%;--pd:1.3s" onclick="selectPin(this,5)"><div class="pin-bubble" id="pin-5"><span class="pin-emoji">🍰</span><div><div class="pin-name">Sophie L.</div><div class="pin-price">$75/hd</div></div></div></div>
+      <div class="map-drawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-lbl">Chefs Near You</div>
+        <div class="map-chef-list">
+          <div class="map-chef-card selected" onclick="selectMapCard(this,0)"><div class="map-card-photo" style="background:linear-gradient(135deg,#8B7355,#3D3020)">🍝</div><div class="map-card-body"><h5>Mario Rossi</h5><span>Italian</span><div class="map-card-price">$85/head · 0.4mi</div></div></div>
+          <div class="map-chef-card" onclick="selectMapCard(this,1)"><div class="map-card-photo" style="background:linear-gradient(135deg,#C4956A,#5A3A20)">🍱</div><div class="map-card-body"><h5>Kenji Tanaka</h5><span>Japanese</span><div class="map-card-price">$150/head · 0.7mi</div></div></div>
+          <div class="map-chef-card" onclick="selectMapCard(this,2)"><div class="map-card-photo" style="background:linear-gradient(135deg,#4A6B5A,#1A3028)">🥗</div><div class="map-card-body"><h5>Isabelle Morel</h5><span>French</span><div class="map-card-price">$120/head · 1.1mi</div></div></div>
+          <div class="map-chef-card" onclick="selectMapCard(this,3)"><div class="map-card-photo" style="background:linear-gradient(135deg,#7A6A4A,#3A2A10)">🍛</div><div class="map-card-body"><h5>Raj Sharma</h5><span>Indian</span><div class="map-card-price">$95/head · 0.3mi</div></div></div>
+          <div class="map-chef-card" onclick="selectMapCard(this,4)"><div class="map-card-photo" style="background:linear-gradient(135deg,#6A4A4A,#3A1A1A)">🥩</div><div class="map-card-body"><h5>Elena Vasquez</h5><span>Spanish</span><div class="map-card-price">$110/head · 1.4mi</div></div></div>
+          <div class="map-chef-card" onclick="selectMapCard(this,5)"><div class="map-card-photo" style="background:linear-gradient(135deg,#6A5A7A,#2A1A4A)">🍰</div><div class="map-card-body"><h5>Sophie Laurent</h5><span>Pastry</span><div class="map-card-price">$75/head · 1.8mi</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="bnav dk">
+      <div class="nav-item" onclick="switchNav('home')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+      <div class="nav-item active" onclick="switchNav('explore')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Explore</span></div>
+      <div class="nav-item" onclick="switchNav('saved')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+      <div class="nav-item" onclick="switchNav('userprofile')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
+    </div>
+  </div>
+
+  <!-- ── CONCIERGE ── -->
+  <div id="page-concierge" class="page">
+    <div class="conc-page-bg">
+      <svg viewBox="0 0 390 844" fill="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.13">
+        <path d="M390 0 C355 90 325 175 345 268 C365 360 392 424 382 528" stroke="#C8962A" stroke-width="4" stroke-linecap="round"/>
+        <path d="M345 268 C305 248 272 215 252 172" stroke="#C8962A" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M0 844 C22 738 12 638 34 538 C56 438 84 376 74 278" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="252" cy="170" rx="10" ry="6" fill="#C8962A" opacity=".7" transform="rotate(-25 252 170)"/>
+        <ellipse cx="74" cy="278" rx="10" ry="6" fill="#C8962A" opacity=".6" transform="rotate(10 74 278)"/>
+      </svg>
+    </div>
+    <div class="sb" style="position:relative;z-index:2"><span class="sb-time" style="color:rgba(255,255,255,.6)">9:41</span></div>
+    <div class="conc-pg-header">
+      <button class="back-btn" style="width:36px;height:36px;border-radius:99px;background:rgba(255,255,255,.1);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="switchNav('home')"><svg style="width:16px;height:16px;stroke:white;stroke-width:2;fill:none" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="conc-pg-title">Plāto Concierge</div>
+      <div style="width:36px"></div>
+    </div>
+    <div class="conc-hero">
+      <div class="conc-avail-badge"><div class="conc-avail-dot"></div><span>Available Now</span></div>
+      <h1>Your Personal<br><em>Dining Curator</em></h1>
+      <p>Tell me about your dream dining experience and I'll find the perfect chef, menu, and setting.</p>
+    </div>
+    <div class="chat-area">
+      <div class="chat-msg bot" style="--md:.2s"><div class="bot-avatar">✦</div><div class="msg-bubble">Welcome! I'm your Plāto concierge. What kind of experience are you envisioning tonight?</div><div class="msg-label">Plāto · Just now</div></div>
+      <div class="chat-msg user" style="--md:.6s"><div class="msg-bubble">I'd love an intimate Italian dinner for two, something really special for an anniversary.</div><div class="msg-label">You · Just now</div></div>
+      <div class="chat-msg bot" style="--md:1s"><div class="bot-avatar">✦</div><div class="msg-bubble">How beautiful — congratulations! I'm thinking Chef Mario Rossi would be perfect. He does a stunning 5-course Roman tasting menu with housemade pasta and truffle. Shall I check his availability?</div><div class="msg-label">Plāto · Just now</div></div>
+    </div>
+    <div class="sug-chips">
+      <div class="sug-chip">🕯️ Romantic dinner</div>
+      <div class="sug-chip">🎉 Celebration</div>
+      <div class="sug-chip">🌿 Plant-based</div>
+      <div class="sug-chip">👨‍🍳 Cooking class</div>
+    </div>
+    <div class="chat-input-bar">
+      <div class="chat-input-wrap">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Describe your ideal experience…</span>
+        <button class="send-btn"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+    </div>
+    <div class="bnav dk">
+      <div class="nav-item" onclick="switchNav('home')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+      <div class="nav-item" onclick="switchNav('explore')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Explore</span></div>
+      <div class="nav-item" onclick="switchNav('saved')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+      <div class="nav-item active" onclick="switchNav('userprofile')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
+    </div>
+  </div>
+
+
+  <!-- ── SAVED PAGE ── -->
+  <div id="page-saved" class="page">
+    <div class="saved-branch-bg">
+      <svg viewBox="0 0 390 844" fill="none" style="width:100%;height:100%;opacity:.07">
+        <path d="M-20 844 C40 700 80 580 60 480 C40 380 0 320 20 240 C40 160 80 120 100 60" stroke="#C8962A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 480 C100 460 140 440 160 400 C180 360 170 320 200 290" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+        <path d="M410 844 C360 720 340 600 360 500 C380 400 410 340 400 250" stroke="#C8962A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M360 500 C320 480 290 450 270 410" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="200" cy="288" rx="11" ry="7" fill="#C8962A" opacity=".7" transform="rotate(-30 200 288)"/>
+        <ellipse cx="160" cy="400" rx="12" ry="7" fill="#C8962A" opacity=".65" transform="rotate(-15 160 400)"/>
+        <ellipse cx="270" cy="410" rx="9" ry="5" fill="#C8962A" opacity=".5" transform="rotate(10 270 410)"/>
+      </svg>
+    </div>
+    <div class="sb" style="background:transparent;position:relative;z-index:2"><span class="sb-time" style="color:var(--warm-black)">9:41</span><div class="sb-icons"><svg viewBox="0 0 16 16" style="fill:var(--warm-black)"><rect x="0" y="10" width="3" height="6"/><rect x="4.5" y="7" width="3" height="9"/><rect x="9" y="4" width="3" height="12"/><rect x="13.5" y="1" width="3" height="15" opacity=".3"/></svg></div></div>
+    <div class="saved-hero">
+      <h2>Saved</h2>
+      <p>Your curated collection</p>
+    </div>
+    <div class="saved-tabs">
+      <button class="saved-tab active" onclick="switchSavedTab(this,0)">Chefs</button>
+      <button class="saved-tab" onclick="switchSavedTab(this,1)">Experiences</button>
+      <button class="saved-tab" onclick="switchSavedTab(this,2)">Collections</button>
+    </div>
+    <div class="saved-scroll">
+      <!-- CHEFS tab -->
+      <div class="saved-panel active" id="saved-panel-0">
+        <div class="sv-chef-card" onclick="openChefProfile('mario')">
+          <div class="sv-chef-img" style="background:linear-gradient(135deg,#8B7355,#3D3020)">
+            <span style="font-size:100px;opacity:.35">🍝</span>
+            <div class="sv-chef-img-info">
+              <h4>Chef Mario Rossi</h4>
+              <span>Italian · Roman Cuisine</span>
+            </div>
+          </div>
+          <div class="sv-chef-body">
+            <div class="sv-chef-meta">
+              <div class="sv-meta-pill"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.9</div>
+              <div class="sv-meta-pill">📍 0.4mi</div>
+              <div class="sv-meta-pill">$85/head</div>
+            </div>
+            <div class="sv-chef-actions">
+              <button class="sv-book-btn" onclick="event.stopPropagation();openBooking('mario')">Book</button>
+              <button class="sv-unsave-btn" onclick="event.stopPropagation();removeSaved(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="sv-chef-card" onclick="openChefProfile('kenji')">
+          <div class="sv-chef-img" style="background:linear-gradient(135deg,#C4956A,#5A3A20)">
+            <span style="font-size:100px;opacity:.35">🍱</span>
+            <div class="sv-chef-img-info">
+              <h4>Chef Kenji Tanaka</h4>
+              <span>Japanese · Omakase</span>
+            </div>
+          </div>
+          <div class="sv-chef-body">
+            <div class="sv-chef-meta">
+              <div class="sv-meta-pill"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>4.8</div>
+              <div class="sv-meta-pill">📍 0.7mi</div>
+              <div class="sv-meta-pill">$150/head</div>
+            </div>
+            <div class="sv-chef-actions">
+              <button class="sv-book-btn" onclick="event.stopPropagation();openBooking('kenji')">Book</button>
+              <button class="sv-unsave-btn" onclick="event.stopPropagation();removeSaved(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="sv-chef-card">
+          <div class="sv-chef-img" style="background:linear-gradient(135deg,#4A6B5A,#1A3028)">
+            <span style="font-size:100px;opacity:.35">🥗</span>
+            <div class="sv-chef-img-info">
+              <h4>Chef Isabelle Morel</h4>
+              <span>French · Michelin-trained</span>
+            </div>
+          </div>
+          <div class="sv-chef-body">
+            <div class="sv-chef-meta">
+              <div class="sv-meta-pill"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>5.0</div>
+              <div class="sv-meta-pill">📍 1.1mi</div>
+              <div class="sv-meta-pill">$120/head</div>
+            </div>
+            <div class="sv-chef-actions">
+              <button class="sv-book-btn">Book</button>
+              <button class="sv-unsave-btn" onclick="event.stopPropagation();removeSaved(this)"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- EXPERIENCES tab -->
+      <div class="saved-panel" id="saved-panel-1">
+        <div class="sv-exp-card">
+          <div class="sv-exp-icon" style="background:linear-gradient(135deg,rgba(92,112,80,.2),rgba(92,112,80,.05))">🍝</div>
+          <div class="sv-exp-info">
+            <h5>Roman Tasting Menu</h5>
+            <p>Chef Mario Rossi · 4-course · $85/head</p>
+            <span class="sv-exp-tag">Italian</span>
+          </div>
+        </div>
+        <div class="sv-exp-card">
+          <div class="sv-exp-icon" style="background:linear-gradient(135deg,rgba(200,150,42,.2),rgba(200,150,42,.05))">🍱</div>
+          <div class="sv-exp-info">
+            <h5>Omakase Chef's Table</h5>
+            <p>Chef Kenji Tanaka · 16-course · $220/head</p>
+            <span class="sv-exp-tag">Japanese</span>
+          </div>
+        </div>
+        <div class="sv-exp-card">
+          <div class="sv-exp-icon" style="background:linear-gradient(135deg,rgba(176,170,158,.2),rgba(176,170,158,.05))">🥐</div>
+          <div class="sv-exp-info">
+            <h5>French Patisserie Class</h5>
+            <p>Chef Isabelle Morel · Cooking class · $95/head</p>
+            <span class="sv-exp-tag">Cooking Class</span>
+          </div>
+        </div>
+      </div>
+      <!-- COLLECTIONS tab -->
+      <div class="saved-panel" id="saved-panel-2">
+        <div class="saved-empty">
+          <div class="saved-empty-icon">📁</div>
+          <h4>No collections yet</h4>
+          <p>Group your saved chefs and experiences into collections for easy planning.</p>
+          <button class="saved-empty-btn" onclick="switchSavedTab(document.querySelector('.saved-tab'),0)">Browse Chefs</button>
+        </div>
+      </div>
+    </div>
+    <div class="bnav lt">
+      <div class="nav-item" onclick="switchNav('home')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+      <div class="nav-item" onclick="switchNav('explore')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Explore</span></div>
+      <div class="nav-item active" onclick="switchNav('saved')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+      <div class="nav-item" onclick="switchNav('userprofile')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
+    </div>
+  </div>
+
+  <!-- ── USER PROFILE PAGE ── -->
+  <div id="page-userprofile" class="page">
+    <div class="up-header">
+      <div class="up-cover">
+        <div class="up-cover-gradient"></div>
+        <svg class="up-cover-branches" viewBox="0 0 390 180" fill="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.22">
+          <path d="M-10 180 C20 140 40 100 30 60 C20 20 0 5 10 -10" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+          <path d="M30 60 C55 45 75 30 80 10" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+          <path d="M400 180 C375 135 365 90 380 45 C390 15 400 5 395 -10" stroke="#C8962A" stroke-width="3" stroke-linecap="round"/>
+          <path d="M380 45 C350 35 328 18 322 0" stroke="#C8962A" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="80" cy="9" rx="8" ry="5" fill="#C8962A" opacity=".6" transform="rotate(15 80 9)"/>
+          <ellipse cx="322" cy="0" rx="8" ry="5" fill="#C8962A" opacity=".55" transform="rotate(-20 322 0)"/>
+        </svg>
+        <button class="up-edit-btn">Edit Profile</button>
+        <div class="up-avatar-row">
+          <div class="up-avatar">👤</div>
+        </div>
+      </div>
+      <div class="up-info-row">
+        <div class="up-name">Jordan Ellison</div>
+        <div class="up-handle">@jordanellison · Manhattan, NY</div>
+        <div class="up-bio-text">Food lover. Private dining enthusiast. Always chasing the perfect table. 🍷</div>
+        <div class="up-stats-row">
+          <div class="up-stat"><div class="up-stat-val">12</div><div class="up-stat-lbl">Bookings</div></div>
+          <div class="up-stat"><div class="up-stat-val">8</div><div class="up-stat-lbl">Chefs</div></div>
+          <div class="up-stat"><div class="up-stat-val">3</div><div class="up-stat-lbl">Saved</div></div>
+          <div class="up-stat"><div class="up-stat-val">47</div><div class="up-stat-lbl">Reviews</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="up-scroll">
+      <div class="up-section">
+        <div class="up-member-card">
+          <div class="up-member-icon">✦</div>
+          <div class="up-member-info">
+            <h4>Plāto Gold Member</h4>
+            <p>Priority bookings · Concierge access · 10% off</p>
+          </div>
+          <div class="up-member-badge">Gold</div>
+        </div>
+      </div>
+      <div class="up-section">
+        <div class="up-section-title">Upcoming Booking</div>
+        <div class="up-booking-card">
+          <div class="up-booking-lbl">Confirmed · Sat Mar 8</div>
+          <div class="up-booking-name">Roman Tasting Menu with Chef Mario Rossi</div>
+          <div class="up-booking-details">
+            <div class="up-booking-detail"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>2 guests</div>
+            <div class="up-booking-detail"><svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>7:00 PM</div>
+            <div class="up-booking-detail"><svg viewBox="0 0 24 24" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>$195 total</div>
+          </div>
+          <div class="up-booking-actions">
+            <button class="up-view-btn">View Details</button>
+            <button class="up-msg-btn">Message Chef</button>
+          </div>
+        </div>
+      </div>
+      <div class="up-section" style="padding-top:14px">
+        <div class="up-section-title">Dining History</div>
+        <div class="up-past-row">
+          <div class="up-past-avatar" style="background:linear-gradient(135deg,#C4956A,#5A3A20)">🍱</div>
+          <div class="up-past-info"><h5>Omakase with Kenji Tanaka</h5><p>Feb 14, 2025 · 2 guests · Anniversary</p></div>
+          <div class="up-past-rating"><div class="up-past-stars"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg></div><div class="up-past-price">$300</div></div>
+        </div>
+        <div class="up-past-row">
+          <div class="up-past-avatar" style="background:linear-gradient(135deg,#8B7355,#3D3020)">🍝</div>
+          <div class="up-past-info"><h5>Roman Dinner with Mario Rossi</h5><p>Jan 20, 2025 · 4 guests · Birthday</p></div>
+          <div class="up-past-rating"><div class="up-past-stars"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg></div><div class="up-past-price">$340</div></div>
+        </div>
+        <div class="up-past-row">
+          <div class="up-past-avatar" style="background:linear-gradient(135deg,#4A6B5A,#1A3028)">🥗</div>
+          <div class="up-past-info"><h5>French Dinner with Isabelle Morel</h5><p>Dec 31, 2024 · 6 guests · New Year</p></div>
+          <div class="up-past-rating"><div class="up-past-stars"><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg><svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg></div><div class="up-past-price">$720</div></div>
+        </div>
+      </div>
+      <div class="up-section" style="padding-top:14px">
+        <div class="up-section-title">Dining Preferences</div>
+        <div class="up-pref-grid">
+          <div class="up-pref-chip cuisine">Italian</div>
+          <div class="up-pref-chip cuisine">Japanese</div>
+          <div class="up-pref-chip cuisine">French</div>
+          <div class="up-pref-chip vibe">Romantic</div>
+          <div class="up-pref-chip vibe">Celebratory</div>
+          <div class="up-pref-chip diet">No allergies</div>
+          <div class="up-pref-chip diet">Wine lover</div>
+        </div>
+      </div>
+      <div style="height:20px"></div>
+    </div>
+    <div class="bnav lt">
+      <div class="nav-item" onclick="switchNav('home')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+      <div class="nav-item" onclick="switchNav('explore')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Explore</span></div>
+      <div class="nav-item" onclick="switchNav('saved')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+      <div class="nav-item active" onclick="switchNav('userprofile')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
+    </div>
+  </div>
+</div><!-- /app -->
+</div></div>
 
 <script>
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    const app = document.getElementById('app');
-    splash.classList.add('exit');
-    setTimeout(() => { app.classList.add('visible'); splash.style.display = 'none'; }, 700);
-  }, 2800);
+// ── CHEF DATA ──
+const CHEFS = {
+  mario: {
+    name:'Chef Mario Rossi', cuisine:'Italian · Roman Cuisine', emoji:'🍝',
+    bg:'linear-gradient(135deg,#8B7355,#3D3020)', rating:'4.9', dist:'0.4mi away',
+    events:'127 events', price:'$85', priceNum:85,
+    bio:"A third-generation Roman chef with 15 years of experience in Michelin-starred kitchens across Rome and New York. Mario brings the soul of Italian cooking — handmade pasta, wood-fired techniques, and the finest seasonal ingredients — directly to your table.",
+    menu:[
+      {course:'Amuse-Bouche',name:'Bruschetta al Pomodoro',desc:'House-toasted sourdough, San Marzano tomatoes, aged balsamico',price:'Included'},
+      {course:'Primo',name:'Cacio e Pepe Tonnarelli',desc:'Handmade tonnarelli, Pecorino Romano DOP, Tellicherry black pepper',price:'Included'},
+      {course:'Secondo',name:'Saltimbocca alla Romana',desc:'Veal escalope, prosciutto di Parma, fresh sage, white wine reduction',price:'Included'},
+      {course:'Dolce',name:'Tiramisu Classico',desc:'Savoiardi soaked in espresso, mascarpone cream, Valrhona cocoa',price:'Included'},
+    ],
+    avail:['Thu Mar 6','Fri Mar 7','Sat Mar 8','Mon Mar 10','Tue Mar 11'],
+    unavail:['Sun Mar 9'],
+    reviews:[
+      {name:'Sarah & James',stars:5,text:'Mario created the most magical anniversary dinner. Every dish was perfection — the pasta alone was worth every penny.',date:'Feb 2025'},
+      {name:'The Hendersons',stars:5,text:'We booked Mario for a birthday celebration of 8 people. He was professional, warm, and the food was absolutely extraordinary.',date:'Jan 2025'},
+    ],
+    packages:[
+      {name:'Signature Roman',price:'$85/head',desc:'4-course tasting menu featuring Mario\'s most celebrated Roman classics. Perfect for intimate dinners.',tags:['4 courses','2h experience','Wine pairing available'],id:'signature'},
+      {name:'Grande Festa',price:'$125/head',desc:'6-course celebration menu with premium ingredients — truffle, lobster, and aged cheeses. For truly special occasions.',tags:['6 courses','3h experience','Wine included'],id:'festa'},
+      {name:'Chef\'s Table',price:'$180/head',desc:'A bespoke 8-course journey crafted personally by Mario based on your preferences and seasonal availability.',tags:['8 courses','4h experience','Full wine pairing'],id:'table'},
+    ]
+  },
+  kenji: {
+    name:'Chef Kenji Tanaka', cuisine:'Japanese · Omakase', emoji:'🍱',
+    bg:'linear-gradient(135deg,#C4956A,#5A3A20)', rating:'4.8', dist:'0.7mi away',
+    events:'89 events', price:'$150', priceNum:150,
+    bio:"Former head sushi chef at a two-Michelin-starred Tokyo restaurant, Kenji brings the precision and artistry of Japanese omakase to your private dining room. Every piece of fish is sourced from Tsukiji market and hand-selected at dawn.",
+    menu:[
+      {course:'Sakizuke',name:'Seasonal Amuse',desc:'Chef\'s daily selection of seasonal Japanese ingredients',price:'Included'},
+      {course:'Sashimi',name:'Premium Omakase Cuts',desc:'Otoro, uni, scallop, and seasonal selection hand-cut tableside',price:'Included'},
+      {course:'Nigiri',name:'12-Piece Omakase Nigiri',desc:'Chef\'s selection of premium fish on hand-pressed shari rice',price:'Included'},
+      {course:'Shokuji',name:'Miso & Tamago',desc:'White dashi miso with seasonal garnish, tamagoyaki finish',price:'Included'},
+    ],
+    avail:['Fri Mar 7','Sat Mar 8','Sun Mar 9','Wed Mar 12'],
+    unavail:['Thu Mar 6','Mon Mar 10'],
+    reviews:[
+      {name:'Michael T.',stars:5,text:'The most authentic omakase experience outside of Japan. Kenji\'s attention to detail is extraordinary.',date:'Feb 2025'},
+      {name:'Priya & Raj',stars:5,text:'We celebrated our anniversary with Kenji and it was transcendent. The otoro literally melted.',date:'Dec 2024'},
+    ],
+    packages:[
+      {name:'Omakase Essentials',price:'$150/head',desc:'12-course omakase experience with premium sashimi and nigiri selections.',tags:['12 courses','2.5h','Sake pairing available'],id:'essentials'},
+      {name:'Chef\'s Omakase',price:'$220/head',desc:'Full 16-course journey including rare seasonal delicacies and premium sake pairing.',tags:['16 courses','3.5h','Sake included'],id:'full'},
+    ]
+  }
+};
 
-  function selectService(btn) {
-    document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+let currentChef = 'mario';
+let bkStep = 0;
+let bkGuests = 2;
+let bkDate = '';
+let bkPackage = '';
+let prevPage = 'home';
+let obStep = 0;
+
+// ── SPLASH → ONBOARDING ──
+setTimeout(()=>{
+  const s=document.getElementById('splash');
+  s.classList.add('exit');
+  setTimeout(()=>{
+    s.style.display='none';
+    document.getElementById('onboarding').classList.add('active');
+  },700);
+},2600);
+
+// ── ONBOARDING ──
+function obNext(){
+  if(obStep < 2){
+    document.getElementById('ob-'+obStep).classList.add('exit');
+    setTimeout(()=>document.getElementById('ob-'+obStep).classList.remove('active','exit'),400);
+    obStep++;
+    document.getElementById('ob-'+obStep).classList.add('active');
+    document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('active',i===obStep));
+    if(obStep===2) document.getElementById('ob-next-btn').textContent='Start Exploring ✦';
+  } else {
+    finishOnboarding();
   }
-  function toggleSave(btn) { btn.classList.toggle('saved'); }
-  function setNav(item) {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    item.classList.add('active');
+}
+function finishOnboarding(){
+  const ob=document.getElementById('onboarding');
+  ob.style.opacity='0';
+  setTimeout(()=>{
+    ob.classList.remove('active');
+    const app=document.getElementById('app');
+    app.classList.add('visible') // add visible class
+    app.style.opacity='1';
+    app.style.transform='translateY(0)';
+  },500);
+}
+// Make app not rely on transition class
+document.getElementById('app').style.transition='opacity .6s ease, transform .6s ease';
+
+// ── NAV ──
+function switchNav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById('page-'+page);
+  if(t) t.classList.add('active');
+  prevPage=page;
+}
+
+function goBack(){
+  switchNav(prevPage==='profile'?'home':prevPage);
+}
+
+// ── HOME INTERACTIONS ──
+function selectService(btn){
+  document.querySelectorAll('.service-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleSave(btn){btn.classList.toggle('saved')}
+
+// ── CHEF PROFILE ──
+function openChefProfile(chefId){
+  currentChef=chefId;
+  const c=CHEFS[chefId];
+  document.getElementById('profile-emoji').textContent=c.emoji;
+  document.getElementById('profile-photo-emoji').style.background=c.bg;
+  document.getElementById('profile-name').textContent=c.name;
+  document.getElementById('profile-cuisine').textContent=c.cuisine;
+  document.getElementById('profile-rating').textContent=c.rating;
+  document.getElementById('profile-dist').textContent=c.dist;
+  document.getElementById('profile-events').textContent=c.events;
+  document.getElementById('profile-bio').textContent=c.bio;
+  document.getElementById('profile-price').innerHTML=c.price+'<span style="font-size:14px;font-weight:400">/head</span>';
+  // Menu
+  const menuEl=document.getElementById('profile-menu');
+  menuEl.innerHTML=c.menu.map(m=>`
+    <div class="menu-item">
+      <div class="course-badge">${m.course}</div>
+      <div class="menu-item-top"><span>${m.name}</span><em>${m.price}</em></div>
+      <p>${m.desc}</p>
+    </div>`).join('');
+  // Avail
+  const availEl=document.getElementById('profile-avail');
+  availEl.innerHTML=c.avail.map(d=>`<div class="avail-chip open">${d}</div>`).join('')+
+    c.unavail.map(d=>`<div class="avail-chip full">${d} · Full</div>`).join('');
+  // Reviews
+  const revEl=document.getElementById('profile-reviews');
+  revEl.innerHTML=c.reviews.map(r=>`
+    <div class="review-card">
+      <div class="review-top"><span class="reviewer">${r.name}</span><div class="review-stars">${'<svg viewBox="0 0 12 12"><path d="M6 1l1.3 2.6L10.5 4l-2.25 2.2.53 3.1L6 7.95l-2.78 1.35.53-3.1L1.5 4l3.2-.4z"/></svg>'.repeat(r.stars)}</div></div>
+      <div class="review-text">${r.text}</div>
+      <div class="review-date">${r.date}</div>
+    </div>`).join('');
+  prevPage='home';
+  switchNav('profile');
+}
+
+function openBookingFromProfile(){
+  openBooking(currentChef);
+}
+
+// ── BOOKING ──
+function openBooking(chefId){
+  currentChef=chefId;
+  bkStep=0; bkGuests=2; bkDate=''; bkPackage='';
+  const c=CHEFS[chefId];
+  // Populate chef summary
+  document.getElementById('bk-chef-avatar').textContent=c.emoji;
+  document.getElementById('bk-chef-avatar').style.background=c.bg;
+  document.getElementById('bk-chef-name').textContent=c.name;
+  document.getElementById('bk-chef-meta').textContent=c.cuisine;
+  document.getElementById('bk-chef-price').textContent=c.price+'/hd';
+  // Build calendar
+  buildCalendar();
+  // Build packages
+  buildPackages(chefId);
+  // Reset steps
+  updateBookingStep(0);
+  switchNav('booking');
+}
+
+function buildCalendar(){
+  const grid=document.getElementById('cal-grid');
+  const days=['Su','Mo','Tu','We','Th','Fr','Sa'];
+  let html=days.map(d=>`<div class="date-day-lbl">${d}</div>`).join('');
+  const today=new Date();
+  const year=today.getFullYear(), month=today.getMonth();
+  const firstDay=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  for(let i=0;i<firstDay;i++) html+=`<div class="date-cell empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const isPast=d<today.getDate();
+    const isToday=d===today.getDate();
+    const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    html+=`<div class="date-cell${isPast?' past':''}${isToday?' today':''}" onclick="selectDate(this,'${dateStr}','${d} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month]}')">${d}</div>`;
   }
+  grid.innerHTML=html;
+}
+
+function selectDate(el,val,display){
+  if(el.classList.contains('past')) return;
+  document.querySelectorAll('.date-cell').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  bkDate=display;
+  updateBkBtn();
+}
+
+function changeGuests(delta){
+  bkGuests=Math.max(2,Math.min(20,bkGuests+delta));
+  document.getElementById('guest-count').textContent=bkGuests;
+  document.getElementById('minus-btn').classList.toggle('disabled',bkGuests<=2);
+  updateBkBtn();
+}
+
+function buildPackages(chefId){
+  const pkgs=CHEFS[chefId].packages;
+  document.getElementById('bk-packages').innerHTML=pkgs.map((p,i)=>`
+    <div class="pkg-card${i===0?' selected':''}" onclick="selectPkg(this,'${p.id}','${p.name}',${parseInt(p.price)})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">
+        <div>
+          <div class="pkg-name">${p.name}</div>
+          <div class="pkg-price">${p.price}</div>
+        </div>
+        <div class="pkg-check"></div>
+      </div>
+      <div class="pkg-desc">${p.desc}</div>
+      <div class="pkg-tags">${p.tags.map(t=>`<span class="pkg-tag">${t}</span>`).join('')}</div>
+    </div>`).join('');
+  // default select first
+  const firstPkg=pkgs[0];
+  bkPackage={id:firstPkg.id,name:firstPkg.name,price:parseInt(firstPkg.price)};
+}
+
+function selectPkg(card,id,name,price){
+  document.querySelectorAll('.pkg-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  bkPackage={id,name,price};
+}
+
+function updateBookingStep(step){
+  bkStep=step;
+  const steps=['bk-step-0','bk-step-1','bk-step-2'];
+  steps.forEach((s,i)=>{
+    document.getElementById(s).classList.toggle('active',i===step);
+  });
+  const prog=[33,66,100];
+  document.getElementById('bk-progress').style.width=prog[step]+'%';
+  ['slbl-0','slbl-1','slbl-2'].forEach((l,i)=>{
+    document.getElementById(l).classList.toggle('active',i===step);
+  });
+  const labels=['Continue to Menu →','Review Booking →','Confirm Booking ✦'];
+  document.getElementById('bk-next-btn').textContent=labels[step];
+  updateBkBtn();
+}
+
+function updateBkBtn(){
+  const btn=document.getElementById('bk-next-btn');
+  if(bkStep===0) btn.style.opacity=(bkDate?1:.5)+'';
+}
+
+function bookingNext(){
+  if(bkStep===0 && !bkDate) return;
+  if(bkStep<2){
+    updateBookingStep(bkStep+1);
+    if(bkStep===2) buildSummary();
+  } else {
+    confirmBooking();
+  }
+}
+
+function buildSummary(){
+  const c=CHEFS[currentChef];
+  const pkgPrice=bkPackage.price||c.priceNum;
+  const subtotal=pkgPrice*bkGuests;
+  const serviceFee=Math.round(subtotal*0.15);
+  const total=subtotal+serviceFee;
+  document.getElementById('bk-summary').innerHTML=`
+    <div class="summary-row"><span class="lbl">Chef</span><span class="val">${c.name}</span></div>
+    <div class="summary-row"><span class="lbl">Date</span><span class="val">${bkDate}</span></div>
+    <div class="summary-row"><span class="lbl">Guests</span><span class="val">${bkGuests} guests</span></div>
+    <div class="summary-row"><span class="lbl">Menu</span><span class="val">${bkPackage.name||'Signature'}</span></div>
+    <div class="summary-row"><span class="lbl">Subtotal</span><span class="val">$${subtotal}</span></div>
+    <div class="summary-row"><span class="lbl">Service fee</span><span class="val">$${serviceFee}</span></div>
+    <div class="summary-row total"><span class="lbl">Total</span><span class="val">$${total}</span></div>`;
+  window._bookingTotal=total;
+}
+
+function confirmBooking(){
+  const c=CHEFS[currentChef];
+  const pkgPrice=bkPackage.price||c.priceNum;
+  const total=window._bookingTotal||(pkgPrice*bkGuests*1.15);
+  document.getElementById('cd-chef').textContent=c.name;
+  document.getElementById('cd-date').textContent=bkDate;
+  document.getElementById('cd-guests').textContent=bkGuests+' guests';
+  document.getElementById('cd-total').textContent='$'+Math.round(total);
+  document.getElementById('confirm-code').textContent='BOOKING #PLT-'+Math.floor(1000+Math.random()*9000);
+  switchNav('confirm');
+}
+
+function bookingBack(){
+  if(bkStep>0) updateBookingStep(bkStep-1);
+  else switchNav(prevPage==='booking'?'home':prevPage);
+}
+
+// ── MAP ──
+function selectPin(el,idx){
+  document.querySelectorAll('.pin-bubble').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pin-'+idx).classList.add('active');
+  document.querySelectorAll('.map-chef-card').forEach((c,i)=>c.classList.toggle('selected',i===idx));
+  const cards=document.querySelectorAll('.map-chef-card');
+  if(cards[idx]) cards[idx].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+function selectMapCard(card,idx){
+  document.querySelectorAll('.map-chef-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.querySelectorAll('.pin-bubble').forEach(p=>p.classList.remove('active'));
+  const pin=document.getElementById('pin-'+idx);
+  if(pin) pin.classList.add('active');
+}
+
+function switchSavedTab(btn,idx){
+  document.querySelectorAll(".saved-tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".saved-panel").forEach(p=>p.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("saved-panel-"+idx).classList.add("active");
+}
+function removeSaved(btn){
+  const card=btn.closest(".sv-chef-card");
+  card.style.transition="opacity .3s, transform .3s";
+  card.style.opacity="0";
+  card.style.transform="translateX(30px)";
+  setTimeout(()=>card.remove(),300);
+}
 </script>
 </body>
 </html>
