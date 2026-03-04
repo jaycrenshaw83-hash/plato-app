@@ -33,9 +33,9 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:'Jost',sans-serif;b
 #onboarding.active{opacity:1;pointer-events:all}
 .ob-bg{position:absolute;inset:0;pointer-events:none}
 .ob-slides{flex:1;display:flex;overflow:hidden;position:relative}
-.ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;opacity:0;transform:translateX(60px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)}
-.ob-slide.active{opacity:1;transform:translateX(0)}
-.ob-slide.exit{opacity:0;transform:translateX(-60px)}
+.ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;opacity:0;visibility:hidden;transform:translateX(60px);transition:opacity .4s ease,transform .4s cubic-bezier(.16,1,.3,1),visibility 0s linear .4s;pointer-events:none}
+.ob-slide.active{opacity:1;visibility:visible;transform:translateX(0);pointer-events:all;transition:opacity .4s ease,transform .4s cubic-bezier(.16,1,.3,1),visibility 0s linear 0s}
+.ob-slide.exit{opacity:0;visibility:hidden;transform:translateX(-60px);pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.16,1,.3,1),visibility 0s linear .3s}
 .ob-icon{width:96px;height:96px;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:32px;position:relative}
 .ob-icon::after{content:'';position:absolute;inset:-3px;border-radius:31px;border:1.5px solid rgba(200,150,42,.4)}
 .ob-slide h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:white;text-align:center;line-height:1.2;margin-bottom:14px}
@@ -1107,36 +1107,68 @@ setTimeout(()=>{
   s.classList.add('exit');
   setTimeout(()=>{
     s.style.display='none';
-    document.getElementById('onboarding').classList.add('active');
+    const ob = document.getElementById('onboarding');
+    ob.classList.add('active');
+    // Use showObSlide to properly animate in the first slide
+    setTimeout(()=> showObSlide(0), 100);
   },700);
 },2600);
 
 // ── ONBOARDING ──
+function showObSlide(idx){
+  // Make sure all non-target slides are fully hidden
+  document.querySelectorAll('.ob-slide').forEach((s,i)=>{
+    if(i !== idx) s.classList.remove('active','exit');
+  });
+  const slide = document.getElementById('ob-'+idx);
+  if(slide){
+    // Force it off-screen first without transition
+    slide.style.transition = 'none';
+    slide.style.transform = 'translateX(60px)';
+    slide.style.opacity = '0';
+    slide.style.visibility = 'visible';
+    // Force reflow so browser registers the starting state
+    slide.offsetHeight;
+    // Re-enable transitions and animate in
+    slide.style.transition = '';
+    slide.style.transform = '';
+    slide.style.opacity = '';
+    slide.classList.add('active');
+  }
+  document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  document.getElementById('ob-next-btn').textContent = idx===2 ? 'Start Exploring ✦' : 'Get Started';
+}
+
 function obNext(){
   if(obStep < 2){
-    document.getElementById('ob-'+obStep).classList.add('exit');
-    setTimeout(()=>document.getElementById('ob-'+obStep).classList.remove('active','exit'),400);
+    const current = document.getElementById('ob-'+obStep);
+    // Remove active first, add exit
+    current.classList.remove('active');
+    current.classList.add('exit');
     obStep++;
-    document.getElementById('ob-'+obStep).classList.add('active');
-    document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('active',i===obStep));
-    if(obStep===2) document.getElementById('ob-next-btn').textContent='Start Exploring ✦';
+    // Wait for exit animation to finish, THEN show new slide
+    setTimeout(()=>{
+      current.classList.remove('exit');
+      showObSlide(obStep);
+    }, 320);
   } else {
     finishOnboarding();
   }
 }
+
 function finishOnboarding(){
   const ob=document.getElementById('onboarding');
+  ob.style.transition='opacity .5s ease';
   ob.style.opacity='0';
   setTimeout(()=>{
     ob.classList.remove('active');
+    ob.style.display='none';
     const app=document.getElementById('app');
-    app.classList.add('visible') // add visible class
+    app.style.transition='opacity .6s ease, transform .6s ease';
     app.style.opacity='1';
     app.style.transform='translateY(0)';
   },500);
 }
-// Make app not rely on transition class
-document.getElementById('app').style.transition='opacity .6s ease, transform .6s ease';
 
 // ── NAV ──
 function switchNav(page){
